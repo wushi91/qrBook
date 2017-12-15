@@ -18,6 +18,7 @@
 
   import QRHeader from '../base/QRHeader'
   import QRMenu from '../base/QRMenu'
+  import MyUtil from '../../common/js/MyUtil.js'
 
   export default {
     name: 'index',
@@ -30,6 +31,27 @@
       'header-component': QRHeader,
       'menu-component': QRMenu,
     },
+
+    created: function () {
+      this.fetchData()
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      '$route': 'fetchData'
+    },
+    methods: {
+      fetchData: function () {
+
+        if(!MyUtil.isUserLogin()){
+          //to登录
+
+          MyUtil.userLogout()
+        }
+
+
+
+      },
+    }
   }
 </script>
 

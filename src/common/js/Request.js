@@ -3,40 +3,74 @@ import MyUtil from '@/common/js/MyUtil.js'
 import Mock from '@/common/js/MockData.js'
 import axios from 'axios'
 
+
+var that = this;
+
 export default {
 
   init: function (context) {
+
   },
 
-  requestRegisterCode: function (context) {
-
-    var url = Api.register_code_url
+  //请求验证码
+  requestGetRegisterCode: function (context,phoneNumber) {
     var data = {
       params: {
-        phoneNumber:context.register_phonenum,
+        phoneNumber:phoneNumber,
+      }
+    }
+    MyUtil.axioGet(Api.get_register_code_url, data, function (response) {
+      console.log(response)
+    })
+  },
+
+  //校验验证码
+  requestCheckRegisterCode: function (context,phoneNumber,password,code) {
+    var data = {
+      params: {
+        phoneNumber:phoneNumber,
+        inputverificationCode:code,
       }
     }
 
-    axios.get(url, data)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    // var data = {
-    //   params: {
-    //     phoneNumber:context.register_phonenum,
-    //   }
-    // };
-    //
-    MyUtil.axioGet(Api.register_code_url, data, function (response) {
-      console.log("返回")
-      console.log(response)
+    MyUtil.axioGet(Api.check_register_code_url, data, function (response) {
+      //校验验证码成功后注册
+      that.a.requestToRigister(context,phoneNumber,password)
     })
-
   },
+
+  //校验验证码成功后注册
+  requestToRigister:function (context,phoneNumber,password) {
+    var data = {
+      params: {
+        phoneNumber:phoneNumber,
+        password:password
+      }
+    }
+
+    MyUtil.axioGet(Api.to_register_url, data, function (response) {
+      console.log(response.data)
+    })
+  },
+
+  //登录
+  requestToLogin:function (context,phoneNumber,password) {
+    var data = {
+      params: {
+        phoneNumber:phoneNumber,
+        password:password
+      }
+    }
+    MyUtil.axioGet(Api.to_login_url, data, function (response) {
+
+
+      console.log(response.data)
+      var tokenId = response.data.user_id
+      MyUtil.saveUserLogin(tokenId)
+    })
+  }
+
+
 }
 
 

@@ -1,10 +1,10 @@
 <template>
   <div class="qr-menu">
     <ul>
-      <li><i></i><span>我的账本</span></li>
-      <li><i></i><span>我的账单</span></li>
-      <li><i></i><span>交易记录</span></li>
-      <li><i></i><span>我的账户</span></li>
+      <li :class="{ 'actived': type === typeAccount }"><i></i><span>我的账本</span></li>
+      <li :class="{ 'actived': type === typeBill }"><i></i><span>我的账单</span></li>
+      <li :class="{ 'actived': type === type3 }"><i></i><span>交易记录</span></li>
+      <li :class="{ 'actived': type === type4 }"><i></i><span>我的账户</span></li>
     </ul>
   </div>
 </template>
@@ -14,8 +14,31 @@ export default {
   name: 'QRMenu',
   data () {
     return {
-
+      type:'account',
+      typeAccount:'account',
+      typeBill:'bill',
+      type3:'3',
+      type4:'4',
     }
+  },
+  created: function () {
+    this.fetchData()
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': 'fetchData'
+  },
+  methods: {
+    fetchData: function () {
+      var fullPath = this.$route.fullPath
+      if(fullPath==='/account'){
+        this.type = this.typeAccount
+      }
+
+      if(fullPath==='/bill'){
+        this.type = this.typeBill
+      }
+    },
   }
 }
 </script>
@@ -41,6 +64,11 @@ export default {
         list-style: none;
         color:rgba(150,151,153,1);
         line-height:90px;
+      }
+
+      .actived{
+        color:rgba(255,255,255,1);
+        background:rgba(23,24,26,1);
       }
 
       li:active{

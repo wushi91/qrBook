@@ -24,7 +24,7 @@
 
 <script>
 
-  import Request from '@/common/js/Request'
+
   import LoginDialog from '../base/LoginDialog'
 
   export default {

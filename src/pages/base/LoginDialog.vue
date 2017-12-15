@@ -15,7 +15,7 @@
       <span class="dialog-title">登录</span>
       <input class='input-phonenum' v-model="login_phonenum" placeholder="请输入手机号码"/><br/>
       <input class='input-password' v-model="login_password" type="password" placeholder="请输入密码"/><br/>
-      <button class="btn-login">登录</button>
+      <button @click="userLogin" class="btn-login">登录</button>
       <div class="dialog_footer">
         <span @click="toForget">忘记密码</span>
         <span @click='toRegister' style="float:right;">免费注册</span>
@@ -30,7 +30,7 @@
       <input class='input-code' v-model="register_code" placeholder="请输入6位验证码"/>
       <button @click="toGetRegisteCode">获取验证码</button>
       <br/>
-      <button class="btn-login">注册并登录</button>
+      <button class="btn-login" @click="userRegister">注册并登录</button>
     </div>
 
   </el-dialog>
@@ -38,7 +38,7 @@
 
 <script>
 
-
+  import Request from '@/common/js/Request'
 
   export default {
     name: 'LoginDialog',
@@ -46,11 +46,11 @@
     data () {
       return {
 //默认值
-        login_phonenum: '111',
-        login_password: '111',
-        register_phonenum: '13822542317',
-        register_password: '111',
-        register_code:"",
+        login_phonenum: '13822542317',
+        login_password: '123456',
+        register_phonenum: '13410052773',
+        register_password: '123456',
+        register_code:"201126",
 
 
         dialog_login_content: false,
@@ -64,7 +64,6 @@
         this.dialog_login_content = false
         this.dialog_register_content = false
         if(this.type==='注册'){
-          console.log('tttttrue')
           this.dialog_register_content = true
         }
         if(this.type==='登录'){
@@ -72,8 +71,16 @@
         }
       },
       closeDialog:function () {
-
       },
+
+      userLogin:function () {
+        Request.requestToLogin(this,this.login_phonenum,this.login_password)
+      },
+      userRegister:function () {
+        //首先校验短信马
+        Request.requestCheckRegisterCode(this,this.register_phonenum,this.register_password,this.register_code)
+      },
+
       toForget: function () {
         this.dialog_forget_content = true
         this.dialog_login_content = false
@@ -85,8 +92,7 @@
         this.dialog_register_content = true
       },
       toGetRegisteCode: function () {
-        console.log('请求验证码')
-        Request.requestRegisterCode(this)
+        Request.requestGetRegisterCode(this,this.register_phonenum)
       }
     },
   }
