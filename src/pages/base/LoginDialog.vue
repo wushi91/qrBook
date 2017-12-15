@@ -5,10 +5,9 @@
     top="120px"
     :center =true
     :show-close=false
-    :visible.sync="showDialog"
+    :visible.sync="innerShowDialog"
     @open="openDialog"
-    @close="closeDialog"
-    size="small">
+    @close="closeDialog">
 
     <!--登录的对话框-->
     <div v-show="dialog_login_content" class="dialog-content" >
@@ -45,6 +44,8 @@
     props: ['showDialog','type'],
     data () {
       return {
+
+        innerShowDialog:this.showDialog,
 //默认值
         login_phonenum: '13822542317',
         login_password: '123456',
@@ -56,6 +57,13 @@
         dialog_login_content: false,
         dialog_register_content: true,
         dialog_forget_content: false,
+      }
+    },
+
+    watch: {
+      //数据同步
+      showDialog (val) {
+        this.innerShowDialog = val
       }
     },
     methods:{
@@ -71,6 +79,8 @@
         }
       },
       closeDialog:function () {
+        //子组件对openStatus修改后向父组件发送事件通知
+        this.$emit('dialogData', false)
       },
 
       userLogin:function () {

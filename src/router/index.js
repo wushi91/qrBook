@@ -12,44 +12,102 @@ import MyBill from '@/pages/index/bill/MyBill'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
-
+    {
+      path:'/',
+      redirect:'/login'
+    },
     {
       path: '/login',
       name: 'Login',
       component: Login
     },
 
-    {
-      path: '/',
-      name: 'Index',
-      component: Index,
 
-      children: [
+    {
+      path:'/home',
+      redirect:'/account'
+    },
+
+    //account我的账本
+    {
+      path: '/account',
+      component: Index,
+      children:[
         {
-          path: '/account',
+          path: '',
           name: 'MyAccount',
           component: MyAccount
         },
+
         {
-          path: '/addaccount',
+          path: 'add',
           name: 'AddAccount',
           component: AddAccount
         },
+      ]
+    },
 
+    //render租客
+    {
+      path: '/render',
+      component: Index,
+      children:[
         {
-          path: '/render',
-          name: 'RenterDetail',
+          path: '',
+          name:'RenterDetail',
           component: RenterDetail
         },
+
+      ]
+    },
+
+
+    //bill我的账单
+    {
+      path: '/bill',
+      component: Index,
+      children:[
         {
-          path: '/bill',
-          name: 'MyBill',
+          path: '',
+          name:'MyBill',
           component: MyBill
         },
-      ]
 
+      ]
     },
+
+    // {
+    //   path: '/ssss',
+    //   name: 'Index',
+    //   component: Index,
+    //
+    //   children: [
+    //     {
+    //       path: 'account',
+    //       name: 'MyAccount',
+    //       component: MyAccount
+    //     },
+    //     {
+    //       path: '/addaccount',
+    //       name: 'AddAccount',
+    //       component: AddAccount
+    //     },
+    //
+    //     {
+    //       path: '/render',
+    //       name: 'RenterDetail',
+    //       component: RenterDetail
+    //     },
+    //     {
+    //       path: '/bill',
+    //       name: 'MyBill',
+    //       component: MyBill
+    //     },
+    //   ]
+    //
+    // },
 
   ]
 })

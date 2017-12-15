@@ -1,10 +1,10 @@
 <template>
   <div class="qr-menu">
     <ul>
-      <li :class="{ 'actived': type === typeAccount }"><i></i><span>我的账本</span></li>
-      <li :class="{ 'actived': type === typeBill }"><i></i><span>我的账单</span></li>
-      <li :class="{ 'actived': type === type3 }"><i></i><span>交易记录</span></li>
-      <li :class="{ 'actived': type === type4 }"><i></i><span>我的账户</span></li>
+      <li :class="{ 'actived': type === typeAccount}" @click="clickMenu(typeAccount)"><i></i><span>我的账本</span></li>
+      <li :class="{ 'actived': type === typeBill}" @click="clickMenu(typeBill)"><i></i><span>我的账单</span></li>
+      <li :class="{ 'actived': type === typeRecord}" @click="clickMenu(typeRecord)"><i></i><span>交易记录</span></li>
+      <li :class="{ 'actived': type === typeMoney}" @click="clickMenu(typeMoney)"><i></i><span>我的账户</span></li>
     </ul>
   </div>
 </template>
@@ -17,8 +17,8 @@ export default {
       type:'account',
       typeAccount:'account',
       typeBill:'bill',
-      type3:'3',
-      type4:'4',
+      typeRecord:'record',
+      typeMoney:'money',
     }
   },
   created: function () {
@@ -29,6 +29,14 @@ export default {
     '$route': 'fetchData'
   },
   methods: {
+
+    clickMenu:function (type) {
+      this.$router.push({path:'/'+type})
+
+      console.log('点击ddd')
+//      this.$router.go('/login');//会刷新界面
+    },
+
     fetchData: function () {
       var fullPath = this.$route.fullPath
       if(fullPath==='/account'){
@@ -37,6 +45,18 @@ export default {
 
       if(fullPath==='/bill'){
         this.type = this.typeBill
+      }
+
+      if(fullPath==='/bill'){
+        this.type = this.typeBill
+      }
+
+      if(fullPath==='/typeRecord'){
+        this.type = this.typeRecord
+      }
+
+      if(fullPath==='/typeMoney'){
+        this.type = this.typeMoney
       }
     },
   }

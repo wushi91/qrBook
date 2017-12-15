@@ -54,7 +54,7 @@ export default {
   userLogout:function () {
       localStorage.removeItem("tokenId")
       sessionStorage.removeItem("tokenId")
-      window.location.href = '#/login'
+      window.location.href = './login'
   }
 
 

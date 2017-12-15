@@ -1,6 +1,8 @@
 <template>
   <div class="index">
+    <div class="header">
     <header-component></header-component>
+    </div>
     <div class="wrapper">
       <div class="menu">
         <menu-component></menu-component>
@@ -61,18 +63,27 @@
   @import "../../common/less/index.less";
 
   .index{
-    height: 100%;
     display: flex;
+    flex:1;
+
     flex-direction: column;
     background-color:rgba(240,241,242,1);
+
+    .header{
+      position: fixed;
+    }
     .wrapper{
+      padding-top: 60px;
       display: flex;
       flex:1;
       align-items: stretch;
       .menu{
+        position: fixed;
+        height: 100%;
 
       }
       .content{
+        padding-left: 180px;
         flex:1;
       }
     }

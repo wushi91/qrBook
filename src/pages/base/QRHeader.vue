@@ -21,6 +21,8 @@ export default {
 <style  lang="less" scoped>
   @import "../../common/less/index.less";
   .header{
+
+    width: 100%;
     height:60px;
     background:rgba(69,73,77,1);
 
