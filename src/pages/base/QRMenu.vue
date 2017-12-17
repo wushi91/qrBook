@@ -32,9 +32,7 @@ export default {
 
     clickMenu:function (type) {
       this.$router.push({path:'/'+type})
-
-      console.log('点击ddd')
-//      this.$router.go('/login');//会刷新界面
+      //this.$router.go('/login');//会刷新界面
     },
 
     fetchData: function () {
@@ -47,15 +45,12 @@ export default {
         this.type = this.typeBill
       }
 
-      if(fullPath==='/bill'){
-        this.type = this.typeBill
-      }
 
-      if(fullPath==='/typeRecord'){
+      if(fullPath==='/record'){
         this.type = this.typeRecord
       }
 
-      if(fullPath==='/typeMoney'){
+      if(fullPath==='/money'){
         this.type = this.typeMoney
       }
     },
@@ -79,6 +74,7 @@ export default {
       text-align: center;
 
       li{
+        cursor: pointer;
         background:rgba(69,73,77,1);
         height:90px;
         list-style: none;
