@@ -6,7 +6,9 @@ import Login from '@/pages/login/Login'
 import MyAccount from '@/pages/index/account/MyAccount'
 import AddAccount from '@/pages/index/account/AddAccount'
 
-import RenterDetail from '@/pages/index/renter/RenterDetail'
+// import RenterDetail from '@/pages/index/renter/RenterDetail'
+import AddRenter from '@/pages/index/renter/AddRenter'
+
 import MyBill from '@/pages/index/bill/MyBill'
 
 Vue.use(Router)
@@ -16,7 +18,7 @@ export default new Router({
   routes: [
     {
       path:'/',
-      redirect:'/login'
+      redirect:'/home'
     },
     {
       path: '/login',
@@ -51,15 +53,28 @@ export default new Router({
 
     //render租客
     {
-      path: '/render',
+      path: '/renter',
       component: Index,
       children:[
         {
           path: '',
-          name:'RenterDetail',
-          component: RenterDetail
+          redirect:'detail'
         },
-
+        {
+          path: 'detail',
+          name:'DetailRenter',
+          component: AddRenter
+        },
+        {
+          path: 'add',
+          name:'AddRenter',
+          component: AddRenter
+        },
+        {
+          path: 'edit',
+          name:'editRenter',
+          component: AddRenter
+        },
       ]
     },
 
@@ -78,48 +93,22 @@ export default new Router({
       ]
     },
 
-    // {
-    //   path: '/ssss',
-    //   name: 'Index',
-    //   component: Index,
-    //
-    //   children: [
-    //     {
-    //       path: 'account',
-    //       name: 'MyAccount',
-    //       component: MyAccount
-    //     },
-    //     {
-    //       path: '/addaccount',
-    //       name: 'AddAccount',
-    //       component: AddAccount
-    //     },
-    //
-    //     {
-    //       path: '/render',
-    //       name: 'RenterDetail',
-    //       component: RenterDetail
-    //     },
-    //     {
-    //       path: '/bill',
-    //       name: 'MyBill',
-    //       component: MyBill
-    //     },
-    //   ]
-    //
-    // },
+    //record交易记录
+    {
+      path: '/record',
+      component: Index
+    },
+
+    //money我的账户
+    {
+      path: '/money',
+      component: Index
+    },
+
+
 
   ]
 })
 
 
-// {
-//   path: '/account',
-//     name: 'MyAccount',
-//   component: MyAccount
-// },
-// {
-//   path: '/bill',
-//     name: 'MyBill',
-//   component: MyBill
-// },
+

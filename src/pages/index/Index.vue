@@ -8,7 +8,7 @@
         <menu-component></menu-component>
       </div>
 
-      <div class="content">
+      <div class="content-wrapper-router-outer">
 
         <router-view></router-view>
       </div>
@@ -46,8 +46,7 @@
 
         if(!MyUtil.isUserLogin()){
           //to登录
-
-          MyUtil.userLogout()
+//          MyUtil.userLogout(this)
         }
 
 
@@ -71,6 +70,7 @@
 
     .header{
       position: fixed;
+      z-index: 99;
     }
     .wrapper{
       padding-top: 60px;
@@ -82,9 +82,10 @@
         height: 100%;
 
       }
-      .content{
-        padding-left: 180px;
+      .content-wrapper-router-outer{
         flex:1;
+        padding: 20px 35px 58px 200px;
+
       }
     }
   }

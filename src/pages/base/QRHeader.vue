@@ -2,52 +2,62 @@
   <div class="header">
     <span class="img-header"><img></span>
     <span class="username">{{ username }}</span>
-    <span class="logout">退出登录</span>
+    <span class="logout" @click="logout">退出登录</span>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'QRHeader',
-  data () {
-    return {
-      username:'13822542317(test)'
+
+  import MyUtil from '../../common/js/MyUtil.js'
+
+  export default {
+    name: 'QRHeader',
+    data() {
+      return {
+        username: '13822542317(test)'
+      }
+    },
+    methods: {
+      logout: function () {
+        MyUtil.userLogout(this)
+      }
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style  lang="less" scoped>
+<style lang="less" scoped>
   @import "../../common/less/index.less";
-  .header{
+
+  .header {
 
     width: 100%;
-    height:60px;
-    background:rgba(69,73,77,1);
+    height: 60px;
+    background: rgba(69, 73, 77, 1);
 
-    .img-header{
+    .img-header {
       display: inline-block;
-      width:26px;
-      height:25px;
+      width: 26px;
+      height: 25px;
       background-color: white;
       margin-top: 20px;
       margin-left: 32px;
     }
-    .username{
-      font-size:14px;
-      color:rgba(255,255,255,1);
-      line-height:20px;
+    .username {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 1);
+      line-height: 20px;
       margin-top: 20px;
       margin-left: 12px;
     }
-    .logout{
+    .logout {
       float: right;
-      font-size:14px;
-      color:rgba(255,255,255,1);
-      line-height:20px;
-      margin-top: 20px;
-      margin-right:40px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 1);
+      line-height: 40px;
+      margin-top: 10px;
+      margin-right: 40px;
+      cursor: pointer;
     }
   }
 

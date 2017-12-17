@@ -1,5 +1,5 @@
 <template>
-  <div class="qr-back">
+  <div class="qr-back" @click="routerBack">
     <span class="back-img"></span>
     <span>返回</span>
   </div>
@@ -11,6 +11,11 @@ export default {
   data () {
     return {
     }
+  },
+  methods:{
+    routerBack:function () {
+      this.$router.back(-1)
+    }
   }
 }
 </script>
@@ -19,7 +24,7 @@ export default {
 <style  lang="less" scoped>
   @import "../../common/less/index.less";
   .qr-back{
-
+    cursor: pointer;
     span:first-child{
       display: inline-block;
       width: 14px;
@@ -33,6 +38,8 @@ export default {
       color:rgba(51,51,51,1);
       line-height:22px;
     }
+
+
   }
 
 

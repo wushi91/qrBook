@@ -1,32 +1,33 @@
-
 import axios from 'axios'
 
 export default {
 
-  axioGet:function (url, data, code200,codeOther) {
+  axioGet: function (url, data, code200, codeOther) {
     function then(response) {
       if (response.data.msg === '0') {
         code200(response)
       } else {
         // 接口出错执行
-        if(codeOther){
+        if (codeOther) {
           codeOther(response)
-        }else{
+        } else {
           console.log('接口出错执行')
           console.log(response.data.msg)
         }
 
       }
     }
+
     function error(err) {
       // 请求运行出错执行
       console.log('请求运行出错执行')
       console.log(err)
     }
+
     axios.get(url, data).then(then).catch(error)
   },
 
-  saveUserLogin:function (tokenId) {
+  saveUserLogin: function (tokenId) {
 
     localStorage.setItem("tokenId", tokenId);
 
@@ -39,10 +40,10 @@ export default {
     // }
   },
 
-  isUserLogin:function () {
+  isUserLogin: function () {
 
-    if(localStorage.getItem("tokenId")===null||localStorage.getItem("tokenId")===''){
-      if(sessionStorage.getItem("tokenId")===null||sessionStorage.getItem("tokenId")===''){
+    if (localStorage.getItem("tokenId") === null || localStorage.getItem("tokenId") === '') {
+      if (sessionStorage.getItem("tokenId") === null || sessionStorage.getItem("tokenId") === '') {
         return false
       }
     }
@@ -50,14 +51,22 @@ export default {
   },
 
 
+  userLogout: function (context, toPath) {
+    localStorage.removeItem("tokenId")
+    sessionStorage.removeItem("tokenId")
 
-  userLogout:function () {
-      localStorage.removeItem("tokenId")
-      sessionStorage.removeItem("tokenId")
-      window.location.href = './login'
+    if (!toPath) {
+      toPath = '/login'
+    }
+
+    this.linkToPath(context,toPath)
+
+  },
+
+
+  linkToPath: function (context, path) {
+    context.$router.push({path: path})
   }
-
-
 
 
 }

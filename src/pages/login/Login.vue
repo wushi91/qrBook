@@ -26,7 +26,7 @@
 <script>
 
 
-  import LoginDialog from '../base/LoginDialog'
+  import LoginDialog from '@/pages/base/LoginDialog'
 
   export default {
     name: 'login',
