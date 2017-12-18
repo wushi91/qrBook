@@ -1,9 +1,9 @@
 <template>
   <div class="account right-content-wrapper">
     <div class="account-blank" v-show="blank">
-      <div class="account-blank-image"></div>
+      <div class="account-blank-image" v-show="false"></div>
       <span>你还没有新建账本</span>
-      <button>新建账本</button>
+      <button @click="addAccount">新建账本</button>
     </div>
 
     <div class="account-book" v-show="!blank">
@@ -28,19 +28,20 @@
           </div>
         </div>
         <div class="tab-content">
-
           <qr-table></qr-table>
-
         </div>
 
-        <div class="tab-page">
+        <div class="tab-page" v-show="false">
 
           <el-pagination
+            :currentPage="page.currentPage"
+            :pageSize="page.pageSize"
+            :total="page.total"
+            @current-change="pageToChange"
             class="page-wrapper"
             layout="prev, pager, next"
             prev-text="上一页"
-            next-text="下一页"
-            :total="1000">
+            next-text="下一页">
           </el-pagination>
         </div>
       </div>
@@ -56,38 +57,71 @@
   import MyUtil from '@/common/js/MyUtil.js'
   import QRTable from '@/pages/base/QRTable'
 
+  import Request from '@/common/js/Request'
+
   export default {
     name: 'MyAccount',
     data() {
       return {
         blank: false,
-
         isTypeAll: true,
         isTypeUnused: false,
         isOutdate: false,
+        page: {
+          currentPage: 1,
+          total: 100,
+          pageSize: 20,
+        },
       }
     },
+    created:function () {
+      this.fetchData()
+    },
+
+
     methods: {
+
+      fetchData: function () {
+        let userId = MyUtil.getUserId()
+        if(this.isTypeAll){
+          Request.requestAccountAllList(this,userId)
+          return
+        }
+        if(this.isTypeUnused){
+          Request.requestAccountUnusedList(this,userId)
+          return
+        }
+        if(this.isOutdate){
+          Request.requestAccountOutdateList(this,userId)
+          return
+        }
+      },
+
       addAccount: function () {
         MyUtil.linkToPath(this, '/account/add')
       },
       toTypeAll:function () {
-
         this.isTypeAll = true
         this.isTypeUnused = false
         this.isOutdate = false
-
+        this.fetchData()
       },
       toTypeUnused:function () {
         this.isTypeAll = false
         this.isTypeUnused = true
         this.isOutdate = false
+        this.fetchData()
       },
       toOutdate:function () {
         this.isTypeAll = false
         this.isTypeUnused = false
         this.isOutdate = true
+        this.fetchData()
       },
+      pageToChange:function (val) {
+        this.page.currentPage = val
+        this.fetchData()
+      }
     },
     components: {
       'qr-table': QRTable,

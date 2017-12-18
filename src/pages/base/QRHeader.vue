@@ -2,6 +2,8 @@
   <div class="header">
     <span class="img-header"><img></span>
     <span class="username">{{ username }}</span>
+
+
     <span class="logout" @click="logout">退出登录</span>
   </div>
 </template>

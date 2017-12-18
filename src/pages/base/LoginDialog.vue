@@ -93,8 +93,8 @@
       },
 
       userLogin: function () {
-        MyUtil.linkToPath(this,'/home')
-//        Request.requestToLogin(this, this.login_phonenum, this.login_password)
+//        MyUtil.linkToPath(this,'/home')
+        Request.requestToLogin(this, this.login_phonenum, this.login_password)
       },
       userRegister: function () {
         //首先校验短信马

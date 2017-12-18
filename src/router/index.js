@@ -48,6 +48,11 @@ export default new Router({
           name: 'AddAccount',
           component: AddAccount
         },
+        {
+          path: 'edit',
+          name: 'EditAccount',
+          component: AddAccount
+        },
       ]
     },
 

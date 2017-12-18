@@ -41,7 +41,6 @@ export default {
   },
 
   isUserLogin: function () {
-
     if (localStorage.getItem("tokenId") === null || localStorage.getItem("tokenId") === '') {
       if (sessionStorage.getItem("tokenId") === null || sessionStorage.getItem("tokenId") === '') {
         return false
@@ -50,6 +49,13 @@ export default {
     return true
   },
 
+  getUserId:function () {
+    let userId = localStorage.getItem("tokenId")
+    if(!userId){
+      userId=''
+    }
+    return userId
+  },
 
   userLogout: function (context, toPath) {
     localStorage.removeItem("tokenId")
@@ -66,7 +72,24 @@ export default {
 
   linkToPath: function (context, path) {
     context.$router.push({path: path})
+  },
+
+  goPageBack:function (context) {
+    context.$router.back(-1)
+  },
+
+
+  toastSuccess:function (context,message,duration) {
+    context.$message({showClose: true, message: message, type: 'success',duration:duration});
+  },
+
+  toastError:function (context,message) {
+    context.$message({showClose: true, message: message, type: 'error'});
+  },
+
+  laterTodo:function (todo,millions) {
+    setTimeout(function () {
+      todo()
+    }, millions)
   }
-
-
 }

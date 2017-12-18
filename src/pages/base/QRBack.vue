@@ -6,39 +6,41 @@
 </template>
 
 <script>
-export default {
-  name: 'QRBack',
-  data () {
-    return {
-    }
-  },
-  methods:{
-    routerBack:function () {
-      this.$router.back(-1)
+
+  import MyUtil from '@/common/js/MyUtil.js'
+
+  export default {
+    name: 'QRBack',
+    data() {
+      return {}
+    },
+    methods: {
+      routerBack: function () {
+        MyUtil.goPageBack(this)
+      }
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style  lang="less" scoped>
+<style lang="less" scoped>
   @import "../../common/less/index.less";
-  .qr-back{
+
+  .qr-back {
     cursor: pointer;
-    span:first-child{
+    span:first-child {
       display: inline-block;
       width: 14px;
       height: 14px;
-      background:rgba(51,51,51,1);
+      background: rgba(51, 51, 51, 1);
     }
 
-    span:nth-child(2){
-      height:22px;
-      font-size:16px;
-      color:rgba(51,51,51,1);
-      line-height:22px;
+    span:nth-child(2) {
+      height: 22px;
+      font-size: 16px;
+      color: rgba(51, 51, 51, 1);
+      line-height: 22px;
     }
-
 
   }
 

@@ -46,7 +46,7 @@
 
         if(!MyUtil.isUserLogin()){
           //to登录
-//          MyUtil.userLogout(this)
+          MyUtil.userLogout(this)
         }
 
 

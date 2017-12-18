@@ -4,14 +4,17 @@
     <qr-back></qr-back>
 
     <div class="add-account-content">
-      <span class="title">新建账本</span>
+      <span class="title" v-show="isTypeAdd">新建账本</span>
+      <span class="title" v-show="isTypeEdit">编辑账本</span>
       <span class="city">房源所在城市</span>
-      <input class="form-text" placeholder="请选择房源所在的城市"/>
+      <input class="form-text" value="广东 深圳" disabled placeholder="请选择房源所在的城市"/>
       <span class="detail-address">房源详细地址</span>
-      <textarea rows='3' class="form-text" placeholder="请填写详细的房源地址、房号等信息"></textarea>
+      <textarea rows='3' class="form-text" v-model="address" placeholder="请填写详细的房源地址、房号等信息"></textarea>
 
-      <div class="btn-wrapper"><button>保存</button></div>
-
+      <div class="btn-wrapper" @click="toSaveAccount">
+        <button v-show="isTypeAdd">保存</button>
+        <button v-show="isTypeEdit">保存修改</button>
+      </div>
     </div>
 
   </div>
@@ -20,17 +23,58 @@
 <script>
 
   import QRBack from '../../base/QRBack'
+  import MyUtil from '@/common/js/MyUtil.js'
+  import Request from '@/common/js/Request'
 
   export default {
-    name: 'MyAccount',
+    name: 'AddAccount',
     data() {
       return {
-        blank: false,
+        province: '广东',
+        city: '深圳',
+        address: "罗湖区 大剧院 东海小区 E栋 15楼 k号",
+
+        isTypeAdd: true,
+        isTypeEdit: false,
       }
     },
     components: {
       'qr-back': QRBack,
     },
+
+    created: function () {
+      this.fetchData()
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      '$route': 'fetchData'
+    },
+
+    methods: {
+
+      fetchData: function () {
+        let path = this.$route.path
+        let addPath = '/account/add'
+        let editPath = '/account/edit'
+        switch (path) {
+          case addPath:
+            this.isTypeAdd = true
+            this.isTypeEdit = false
+            break;
+          case editPath:
+            this.isTypeAdd = false
+            this.isTypeEdit = true
+            break;
+        }
+      },
+      toSaveAccount: function () {
+        console.log('toSaveAccount')
+        let userId = MyUtil.getUserId()
+        Request.requestAddAccount(this, userId, this.province, this.city, this.address)
+      }
+
+
+    }
   }
 </script>
 
@@ -64,33 +108,33 @@
         margin-top: 20px;
       }
 
-      input{
+      input {
         margin-top: 10px;
         width: 320px;
 
       }
 
-      textarea{
+      textarea {
         margin-top: 10px;
         width: 320px;
-       line-height: 25px;
+        line-height: 25px;
 
       }
 
-      .btn-wrapper{
+      .btn-wrapper {
         width: 320px;
         margin-top: 30px;
       }
 
-      button{
+      button {
         margin: auto;
-        padding:8px 38px 8px 38px;
-        background:rgba(46,138,230,1);
-        border-radius: 6px ;
+        padding: 8px 38px 8px 38px;
+        background: rgba(46, 138, 230, 1);
+        border-radius: 6px;
         display: block;
-        font-size:18px;
-        color:rgba(255,255,255,1);
-        line-height:25px;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 1);
+        line-height: 25px;
         margin-bottom: 60px;
       }
 

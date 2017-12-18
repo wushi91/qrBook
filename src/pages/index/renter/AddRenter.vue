@@ -3,7 +3,7 @@
 
     <qr-back></qr-back>
 
-    <div class="render-detail-content" :class="{ 'just-view': isTypeDetail}" >
+    <div class="render-detail-content" :class="{ 'just-view': isTypeDetail}">
       <!--标题-->
       <span class="title" v-show="isTypeDetail">租客详情</span>
       <span class="title" v-show="isTypeAdd">添加租客</span>
@@ -12,38 +12,75 @@
       <!--内容-->
       <span class="house-name">都市名园D栋26G</span>
       <span>租客姓名</span>
-      <el-input placeholder="请输入租客姓名" :disabled="isTypeDetail"></el-input>
-      <span>租客手机号</span>
-      <el-input placeholder="请输入租客手机号" :disabled="isTypeDetail"></el-input>
-      <span>起租日期</span>
-      <el-date-picker class='date-no-before-icon' :disabled="isTypeDetail" type="date" placeholder="请选择起租日期">
+      <el-input
+        placeholder="请输入租客姓名"
+        v-model='renterName'
+        :disabled="isTypeDetail"></el-input>
 
-      </el-date-picker>
+      <span>租客手机号</span>
+      <el-input
+        placeholder="请输入租客手机号"
+        v-model='renterPhone'
+        :disabled="isTypeDetail"></el-input>
+
+      <span>起租日期</span>
+      <el-date-picker
+        class='date-no-before-icon'
+        v-model='rentStartDate'
+        :disabled="isTypeDetail"
+        type="date"
+        placeholder="请选择起租日期"></el-date-picker>
+
       <span>截止日期</span>
-      <el-date-picker class='date-no-before-icon' :disabled="isTypeDetail"  placeholder="请选择截止日期" type="date"></el-date-picker>
+      <el-date-picker
+        class='date-no-before-icon'
+        :disabled="isTypeDetail"
+        placeholder="请选择截止日期"
+        type="date"
+        v-model='rentOverDate'></el-date-picker>
+
+
       <span>租期</span>
-      <el-input placeholder="" :disabled="isTypeDetail" ></el-input>
+      <el-input
+        placeholder=""
+        :disabled="isTypeDetail"
+        v-model='rentLength'>
+        <template slot="append">
+          <div>月</div>
+        </template>
+      </el-input>
+
       <span>交租方式</span>
-      <el-input placeholder="请选择交租方式" :disabled="isTypeDetail" >
+      <el-input
+        placeholder="请选择交租方式"
+        :disabled="isTypeDetail"
+        v-model='rentPayWay'>
         <template slot="append">
           <div>月/付</div>
         </template>
       </el-input>
+
       <span>交租日期</span>
-      <el-input placeholder="请选择交租日期" :disabled="isTypeDetail" >
+      <el-input placeholder="请选择交租日期"
+                :disabled="isTypeDetail"
+                v-model='rentPayDate'>
         <template slot="append">
           <div>号</div>
         </template>
       </el-input>
+
       <span>押金</span>
-      <el-input placeholder="请输入押金金额" :disabled="isTypeDetail" >
+      <el-input placeholder="请输入押金金额"
+                :disabled="isTypeDetail"
+                v-model='yaJinMoney'>
         <template slot="append">
           <div>元</div>
         </template>
-
       </el-input>
       <span>每月租金</span>
-      <el-input placeholder="请输入租金金额" :disabled="isTypeDetail" >
+      <el-input placeholder="请输入租金金额"
+                v-model='rentMoney'
+                :disabled="isTypeDetail">
         <template slot="append">
           <div>元</div>
         </template>
@@ -56,7 +93,7 @@
           <button>租客退房</button>
         </div>
 
-        <div v-show="isTypeAdd">
+        <div @click="addRenter" v-show="isTypeAdd">
           <button>保存</button>
         </div>
 
@@ -74,15 +111,29 @@
 
   import QRBack from '../../base/QRBack'
   import MyUtil from '@/common/js/MyUtil.js'
+  import Request from '@/common/js/Request'
 
   export default {
     name: 'RenterDetail',
     data() {
       return {
-        type:'',//detail add edit
-        isTypeDetail:true,
-        isTypeAdd:false,
-        isTypeEdit:false,
+        type: '',//detail add edit
+        isTypeDetail: true,
+        isTypeAdd: false,
+        isTypeEdit: false,
+
+
+        //表格信息
+        renterName: '流客',
+        renterPhone: '13822542317',
+        rentStartDate: '2017-12-12',
+        rentOverDate: '2018-12-12',
+        rentLength: '12',
+        rentPayWay: '1',
+        rentPayDate: '12',
+        yaJinMoney: '5000',
+        rentMoney: '2500'
+
       }
     },
     components: {
@@ -95,34 +146,40 @@
       // 如果路由有变化，会再次执行该方法
       '$route': 'fetchData'
     },
-    methods:{
-      fetchData:function () {
+    methods: {
+      fetchData: function () {
         let path = this.$route.path
-        let detailPath= '/renter/detail'
-        let addPath= '/renter/add'
-        let editPath= '/renter/edit'
-        switch (path){
+        let detailPath = '/renter/detail'
+        let addPath = '/renter/add'
+        let editPath = '/renter/edit'
+        switch (path) {
           case detailPath:
-            this.isTypeDetail=true
-            this.isTypeAdd=false
-            this.isTypeEdit=false
+            this.isTypeDetail = true
+            this.isTypeAdd = false
+            this.isTypeEdit = false
             break;
           case addPath:
-            this.isTypeDetail=false
-            this.isTypeAdd=true
-            this.isTypeEdit=false
+            this.isTypeDetail = false
+            this.isTypeAdd = true
+            this.isTypeEdit = false
             break;
           case editPath:
-            this.isTypeDetail=false
-            this.isTypeAdd=false
-            this.isTypeEdit=true
+            this.isTypeDetail = false
+            this.isTypeAdd = false
+            this.isTypeEdit = true
             break;
         }
-        
+
       },
 
-      editRenter:function () {
-        MyUtil.linkToPath(this,'/renter/edit')
+      addRenter: function () {
+        let userId = MyUtil.getUserId()
+        let houseId = ''
+        Request.requestAddRenter(this, userId, houseId, this.renterName, this.renterPhone, this.rentStartDate, this.rentOverDate, this.rentLength, this.rentPayWay, this.rentPayDate, this.yaJinMoney, this.rentMoney)
+      },
+
+      editRenter: function () {
+        MyUtil.linkToPath(this, '/renter/edit')
       }
 
     }
@@ -187,11 +244,11 @@
 
   @import "../../../common/less/index.less";
 
-  .just-view{
-    .el-input.is-disabled{
-      .el-input__inner{
+  .just-view {
+    .el-input.is-disabled {
+      .el-input__inner {
         cursor: default;
-        color:#333333;
+        color: #333333;
         background-color: white;
       }
 
@@ -209,20 +266,20 @@
     .el-input {
       width: 200px;
       margin-top: 10px;
-      border:1px solid #999999 ;
+      border: 1px solid #999999;
 
       .el-input__inner {
         padding: 9px 12px;
         font-size: 16px;
         line-height: 16px;
         border-radius: 0;
-        border:none;
+        border: none;
 
       }
 
       .el-input-group__append {
         padding: 0;
-        border:none;
+        border: none;
         text-align: center;
         background: white;
         margin-left: -10px;
@@ -230,7 +287,7 @@
         div {
           cursor: pointer;
           font-size: 16px;
-          color:#333333;
+          color: #333333;
           margin-right: 10px;
 
         }
