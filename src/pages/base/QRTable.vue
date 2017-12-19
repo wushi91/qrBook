@@ -4,13 +4,13 @@
 
     <div class="table-header">
       <span class="header-item" v-for="item in headerData"
-                 :style="{'width':item.width}">{{ item.label }}</span>
+            :style="{'width':item.width}">{{ item.label }}</span>
     </div>
 
     <div class="table-content">
-      <div class="table-row" v-for="item in tableData">
-        <div class='table-house-use' v-if="!item.isUnused">
 
+      <div class="table-row" v-for="item in tableData">
+        <div class='table-house-use' :class="{'table-house-overdate': isOutdate}" v-if="!item.isUnused||isOutdate">
           <!--有租客的房源-->
           <span v-for="header in headerData" :style="{ 'width': header.width}">{{ item[header.prob] }}</span>
 
@@ -20,12 +20,12 @@
             trigger="hover">
             <el-button slot="reference" class="more-action">更多</el-button>
 
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="editAccount">编辑账本
+            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="editAccount(item.houseId,item.province,item.city,item.houseName)">编辑账本
             </el-button>
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="toRenterDetail">
+            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="toRenterDetail(item.accountId)">
               租客详情
             </el-button>
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="deleteAccount">
+            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="deleteAccount(item.accountId)">
               删除账本
             </el-button>
 
@@ -35,8 +35,25 @@
         <div class='table-house-unuse' v-else>
           <!--没有租客的房源-->
           <span :style="{ 'width': headerData[0].width}">{{ item[headerData[0].prob]}}</span>
-          <span style="color:rgba(242,73,73,1);cursor: pointer;" @click="addRenter">添加租客信息</span>
+          <span style="color:rgba(242,73,73,1);cursor: pointer;" @click="addRenter(item.houseId,item.houseName)">添加租客信息</span>
+          <span :style="{ 'width': headerData[2].width}"></span>
+          <span :style="{ 'width': headerData[3].width}"></span>
+
+          <el-popover
+            placement="bottom"
+            width="150"
+            trigger="hover">
+            <el-button slot="reference" class="more-action">更多</el-button>
+
+            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="editAccount(item.houseId,item.province,item.city,item.houseName)">编辑账本
+            </el-button>
+            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="deleteAccount(item.accountId)">
+              删除账本
+            </el-button>
+
+          </el-popover>
         </div>
+
 
       </div>
 
@@ -49,54 +66,29 @@
 <script>
 
   import MyUtil from '@/common/js/MyUtil.js'
+  import Request from '@/common/js/Request'
 
   export default {
     name: "QRTable",
-    props:['isTypeAll','isTypeUnused','isOutdate'],
+    props:['headerData','tableData','isTypeAll','isTypeUnused','isOutdate'],
     data() {
       return {
-        allAccountHeaderData: [
-          {label: '房源名称', prob: 'houseName', width: '340px'},
-          {label: '租客', prob: 'renter', width: '125px'},
-          {label: '租期', prob: 'rentdate', width: '250px'},
-          {label: '每月租金', prob: 'rentmoney', width: '125px'},
-        ],
-
-//        headerData:this.allAccountHeaderData,
-        unusedAccountHeaderData: [
-          {label: '房源名称', prob: 'houseName', width: '340px'},
-          {label: '租客', prob: 'renter', width: '125px'},
-          {label: '', prob: 'rentdate', width: '250px'},
-          {label: '', prob: 'rentmoney', width: '125px'},
-        ],
-        outDateHeaderData: [
-          {label: '房源名称', prob: 'houseName', width: '340px'},
-          {label: '逾期时间', prob: 'outdateLength', width: '125px'},
-          {label: '交租日期', prob: 'rentdate', width: '250px'},
-          {label: '逾期金额', prob: 'outdateMoney', width: '125px'},],
-        tableData: [
-          {houseName: '都市名园D栋26G', renter: '李一飞', rentdate: '2017/12/01-2018/11/30', rentmoney: '5000元', id: '1'},
-          {houseName: '都市名园F栋27K', renter: null, isUnused: true, id: '2'},
-          {houseName: '都市名园D栋26A', renter: '赵磊', rentdate: '2017/12/01-2018/11/30', rentmoney: '215000元', id: '3'},
-          {houseName: '都市名园D栋16G', renter: '刘大磊鹏', rentdate: '2017/12/01-2018/11/30', rentmoney: '5000元', id: '4'},
-          {houseName: '阳光棕榈园10单元2008', renter: '李一飞', rentdate: '2017/12/01-2018/11/30', rentmoney: '5000元', id: '5'},],
       }
     },
     methods: {
-      addRenter: function () {
-        let houseId = 'sss'
-        MyUtil.linkToPath(this, '/renter/add?houseId=' + houseId)
+      addRenter: function (houseId,houseName) {
+        MyUtil.linkToPath(this, '/renter/add?houseId=' + houseId+'&houseName='+houseName)
       },
-      toRenterDetail: function () {
-        let houseId = 'sss'
-        MyUtil.linkToPath(this, '/renter/detail?houseId=' + houseId)
+      toRenterDetail: function (accountId) {
+
+        MyUtil.linkToPath(this, '/renter/detail?accountId=' + accountId)
       },
-      editAccount: function () {
-        let houseId = 'sss'
-        MyUtil.linkToPath(this, '/account/edit?houseId=' + houseId)
+      editAccount: function (houseId,province,city,houseName) {
+
+        MyUtil.linkToPath(this, '/account/edit?houseId='+ houseId+'&province='+province+'&city='+city+'&address='+houseName )
       },
-      deleteAccount: function () {
-        console.log('deleteAccount')
+      deleteAccount: function (accountId) {
+        Request.requestDeleteAccount(this,accountId)
       },
 
     }
@@ -154,6 +146,13 @@
           font-size: 24px;
           color: rgba(51, 51, 51, 1);
         }
+
+        .table-house-overdate {
+          span:nth-child(2) {
+            color: rgba(242, 73, 73, 1)
+          }
+        }
+
         span {
           font-size: 18px;
           color: #999999;

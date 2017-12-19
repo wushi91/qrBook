@@ -49,10 +49,10 @@ export default {
     return true
   },
 
-  getUserId:function () {
+  getUserId: function () {
     let userId = localStorage.getItem("tokenId")
-    if(!userId){
-      userId=''
+    if (!userId) {
+      userId = ''
     }
     return userId
   },
@@ -65,7 +65,7 @@ export default {
       toPath = '/login'
     }
 
-    this.linkToPath(context,toPath)
+    this.linkToPath(context, toPath)
 
   },
 
@@ -74,22 +74,141 @@ export default {
     context.$router.push({path: path})
   },
 
-  goPageBack:function (context) {
+  goPageBack: function (context) {
     context.$router.back(-1)
   },
 
 
-  toastSuccess:function (context,message,duration) {
-    context.$message({showClose: true, message: message, type: 'success',duration:duration});
+  toastSuccess: function (context, message, duration) {
+    context.$message({showClose: true, message: message, type: 'success', duration: duration});
   },
 
-  toastError:function (context,message) {
+  toastError: function (context, message) {
     context.$message({showClose: true, message: message, type: 'error'});
   },
 
-  laterTodo:function (todo,millions) {
+  laterTodo: function (todo, millions) {
     setTimeout(function () {
       todo()
     }, millions)
+  },
+
+  getHeaderData: function (type) {
+    //全部账本allAccountHeaderData
+    //闲置账本unusedAccountHeaderData
+    //逾期账本outDateHeaderData
+    let allAccountHeaderData = [
+      {label: '房源名称', prob: 'houseName', width: '340px'},
+      {label: '租客', prob: 'renterName', width: '138px'},
+      {label: '租期', prob: 'rentStartToOver', width: '250px'},
+      {label: '每月租金', prob: 'rentMoney', width: '125px'},
+    ]
+
+    let unusedAccountHeaderData = [
+      {label: '房源名称', prob: 'houseName', width: '340px'},
+      {label: '租客', prob: 'renterName', width: '138px'},
+      {label: '', prob: 'ss', width: '250px'},
+      {label: '', prob: 'ss', width: '125px'},
+    ]
+    let outdateHeaderData = [
+      {label: '房源名称', prob: 'houseName', width: '340px'},
+      {label: '逾期时间', prob: 'outdateLength', width: '138px'},
+      {label: '交租日期', prob: 'rentPayDate', width: '250px'},
+      {label: '逾期金额', prob: 'outdateMoney', width: '125px'},]
+
+    switch (type) {
+      case 'all':
+        return allAccountHeaderData
+      case 'unused':
+        return unusedAccountHeaderData
+      case 'outdate':
+        return outdateHeaderData
+    }
+  },
+  getTableData: function (list) {
+    //全部账本allAccountHeaderData
+    //闲置账本unusedAccountHeaderData
+    //逾期账本outDateHeaderData
+
+    let tableData =[]
+    for(let i=0;i<list.length;i++) {
+
+      let item = list[i]
+      let newItem =
+        {
+          accountId:item.id,
+
+          //房源
+          houseId: item.hid,
+          houseName: item.address,
+          province:item.province,
+          city:item.city,
+
+
+          //租客
+          renterName: item.name,
+          renterPhone: item.phone,
+          rentStartDate: item.start_time,
+          rentOverDate: item.end_time,
+          rentLength: item.rent_month,
+          rentPayWay: item.pay_type,
+          rentPayDate: item.pay_time,
+          yaJinMoney: item.security_deposit,
+          rentMoney: item.rent,
+
+          //逾期
+          outdateLength:item.overdueNum,
+          outdateMoney:item.rent,
+
+
+
+
+        }
+
+
+      // renterName: '流客',
+      //   renterPhone: '13822542317',
+      //
+      //   rentStartDate: new Date(),
+      //   rentOverDate: new Date().setMonth(new Date().getMonth()+3),
+      //   rentLength: '12',
+      //   rentPayWay: '1',
+      //   rentPayDate: '12',
+      //   yaJinMoney: '5000',
+      //   rentMoney: '2500'
+
+      if (item.name) {
+        //有租客
+        newItem.isUnused = false
+      } else {
+        newItem.isUnused = true
+      }
+      tableData.push(newItem)
+    }
+    return tableData
   }
+
+
 }
+
+//
+// let tableData = [
+//   {houseName: '都市名园D栋66G', renter: '李一飞', rentdate: '2017/12/01-2018/11/30', rentmoney: '5000元', id: '1'},
+//   {houseName: '都市名园D栋26G', outdateLength: '李一飞', rentdate: '2017/12/01-2018/11/30', outdateMoney: '5000元', id: '1'},
+//   {houseName: '都市名园F栋27K', outdateLength: null, isUnused: true, id: '2'},
+//   {houseName: '都市名园D栋26A', outdateLength: '赵磊', paydate: '2017/12/01-2018/11/30', outdateMoney: '215000元', id: '3'},
+//   {
+//     houseName: '都市名园D栋16G',
+//     outdateLength: '刘大磊鹏',
+//     rentdate: '2017/12/01-2018/11/30',
+//     outdateMoney: '5000元',
+//     id: '4'
+//   },
+//   {
+//     houseName: '阳光棕榈园10单元2008',
+//     outdateLength: '李一飞',
+//     rentdate: '2017/12/01-2018/11/30',
+//     outdateMoney: '5000元',
+//     id: '5'
+//   },]
+

@@ -10,7 +10,7 @@
       <span class="title" v-show="isTypeEdit">编辑租客信息</span>
 
       <!--内容-->
-      <span class="house-name">都市名园D栋26G</span>
+      <span class="house-name" v-text="houseName">房源名称</span>
       <span>租客姓名</span>
       <el-input
         placeholder="请输入租客姓名"
@@ -89,8 +89,8 @@
 
       <div class="btn-wrapper">
         <div v-show="isTypeDetail">
-          <button @click="editRenter">编辑租客信息</button>
-          <button>租客退房</button>
+          <button @click="toPageEditRenter">编辑租客信息</button>
+          <button @click="toDeleteRenter">租客退房</button>
         </div>
 
         <div @click="addRenter" v-show="isTypeAdd">
@@ -98,7 +98,7 @@
         </div>
 
         <div v-show="isTypeEdit">
-          <button>保存修改</button>
+          <button @click="editRenter" >保存修改</button>
         </div>
       </div>
 
@@ -117,6 +117,9 @@
     name: 'RenterDetail',
     data() {
       return {
+        houseName:'',
+        houseId: '',
+        accountId:'',
         type: '',//detail add edit
         isTypeDetail: true,
         isTypeAdd: false,
@@ -124,15 +127,17 @@
 
 
         //表格信息
-        renterName: '流客',
-        renterPhone: '13822542317',
-        rentStartDate: '2017-12-12',
-        rentOverDate: '2018-12-12',
-        rentLength: '12',
-        rentPayWay: '1',
-        rentPayDate: '12',
-        yaJinMoney: '5000',
-        rentMoney: '2500'
+        //new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate() + " 23:59:59"
+        renterName: '',
+        renterPhone: '',
+
+        rentStartDate: new Date(),
+        rentOverDate: new Date().setMonth(new Date().getMonth()+3),
+        rentLength: '',
+        rentPayWay: '',
+        rentPayDate: '',
+        yaJinMoney: '',
+        rentMoney: ''
 
       }
     },
@@ -148,6 +153,8 @@
     },
     methods: {
       fetchData: function () {
+        this.houseId = this.$route.query.houseId
+        this.accountId = this.$route.query.accountId
         let path = this.$route.path
         let detailPath = '/renter/detail'
         let addPath = '/renter/add'
@@ -157,11 +164,13 @@
             this.isTypeDetail = true
             this.isTypeAdd = false
             this.isTypeEdit = false
+            this.getRenterDetail()
             break;
           case addPath:
             this.isTypeDetail = false
             this.isTypeAdd = true
             this.isTypeEdit = false
+            this.houseName = this.$route.query.houseName
             break;
           case editPath:
             this.isTypeDetail = false
@@ -172,15 +181,49 @@
 
       },
 
-      addRenter: function () {
-        let userId = MyUtil.getUserId()
-        let houseId = ''
-        Request.requestAddRenter(this, userId, houseId, this.renterName, this.renterPhone, this.rentStartDate, this.rentOverDate, this.rentLength, this.rentPayWay, this.rentPayDate, this.yaJinMoney, this.rentMoney)
+      getRenterDetail:function () {
+
+        if (!this.accountId) {
+          MyUtil.toastError(this,'找不到对应的账本')
+        }else{
+          Request.requestRenterDeatil(this,this.accountId)
+        }
+
       },
 
-      editRenter: function () {
-        MyUtil.linkToPath(this, '/renter/edit')
-      }
+      addRenter: function () {
+        let userId = MyUtil.getUserId()
+        if (!this.houseId) {
+          MyUtil.toastError(context,'找不到对应的房子')
+        }else{
+          let rentStartDate = this.rentStartDate.getFullYear() + "-" + (this.rentStartDate.getMonth() + 1) + "-" + this.rentStartDate.getDate()
+          let rentOverDate = new Date(this.rentOverDate)
+          rentOverDate = rentOverDate.getFullYear() + "-" + (rentOverDate.getMonth() + 1) + "-" + rentOverDate.getDate()
+          Request.requestAddRenter(this, userId, this.houseId, this.renterName, this.renterPhone, rentStartDate, rentOverDate, this.rentLength, this.rentPayWay, this.rentPayDate, this.yaJinMoney, this.rentMoney)
+        }
+      },
+
+      editRenter:function () {
+        let userId = MyUtil.getUserId()
+        if (!this.houseId) {
+          MyUtil.toastError(this,'找不到对应的房子')
+        }else{
+          let rentStartDate = this.rentStartDate.getFullYear() + "-" + (this.rentStartDate.getMonth() + 1) + "-" + this.rentStartDate.getDate()
+          let rentOverDate = new Date(this.rentOverDate)
+          rentOverDate = rentOverDate.getFullYear() + "-" + (rentOverDate.getMonth() + 1) + "-" + rentOverDate.getDate()
+          Request.requestEditRenter(this, userId,this.accountId,this.houseId, this.renterName, this.renterPhone, rentStartDate, rentOverDate, this.rentLength, this.rentPayWay, this.rentPayDate, this.yaJinMoney, this.rentMoney)
+        }
+      },
+
+
+      toPageEditRenter: function () {
+        MyUtil.linkToPath(this, '/renter/edit?houseId='+this.houseId+"&accountId="+this.accountId)
+      },
+
+      toDeleteRenter:function () {
+        console.log('toDeleteRenter')
+        Request.requestDeleteRender(this,this.accountId)
+      },
 
     }
   }

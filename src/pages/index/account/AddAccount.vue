@@ -11,9 +11,9 @@
       <span class="detail-address">房源详细地址</span>
       <textarea rows='3' class="form-text" v-model="address" placeholder="请填写详细的房源地址、房号等信息"></textarea>
 
-      <div class="btn-wrapper" @click="toSaveAccount">
-        <button v-show="isTypeAdd">保存</button>
-        <button v-show="isTypeEdit">保存修改</button>
+      <div class="btn-wrapper" >
+        <button v-show="isTypeAdd" @click="toSaveAccount">保存</button>
+        <button v-show="isTypeEdit" @click="toEditAccount" >保存修改</button>
       </div>
     </div>
 
@@ -30,9 +30,11 @@
     name: 'AddAccount',
     data() {
       return {
+
+        houseId:'',
         province: '广东',
         city: '深圳',
-        address: "罗湖区 大剧院 东海小区 E栋 15楼 k号",
+        address: "B1",
 
         isTypeAdd: true,
         isTypeEdit: false,
@@ -64,6 +66,10 @@
           case editPath:
             this.isTypeAdd = false
             this.isTypeEdit = true
+            this.houseId = this.$route.query.houseId
+            this.province = this.$route.query.province
+            this.city = this.$route.query.city
+            this.address = this.$route.query.address
             break;
         }
       },
@@ -71,6 +77,12 @@
         console.log('toSaveAccount')
         let userId = MyUtil.getUserId()
         Request.requestAddAccount(this, userId, this.province, this.city, this.address)
+      },
+      toEditAccount:function () {
+        console.log('toEditAccount')
+        let userId = MyUtil.getUserId()
+        Request.requestEditAccount(this, userId,this.houseId, this.province, this.city, this.address)
+
       }
 
 

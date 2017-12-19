@@ -1,7 +1,7 @@
 // var host ='http://192.168.0.104:8080'
 // vae host:'.',//上线
 // var host = 'http://localhost:8080'
-var host = '.'
+var host = ''
 
 export default {
   indexPage: '/index.html',
@@ -21,10 +21,14 @@ export default {
   get_unused_account_url: host + '/rentBook/house/findIdleHouse.do',
   get_outdate_account_url: host + '/rentBook/book/selectOverdue.do',
   to_add_account_url: host + '/rentBook/house/addHousing.do',
+  to_edit_account_url:host+'/rentBook/update/updateAddress.do',
+  to_delete_account_url:host+'/rentBook/update/DelLedgers.do',
 
   //租客相关
   to_add_renter_url:host+'/rentBook/book/addBook.do',
-  // to_register_url:host+'/rentBook/landlord/landlordReg.do',
+  get_renter_detail_url:host+'/rentBook/book/detail.do',
+  to_edit_renter_url:host+'/rentBook/update/updateTenantInfo.do',
+  to_delete_renter_url:host+'/rentBook/checkOut/status.do',
 
   //
   //内置路由

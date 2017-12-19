@@ -28,7 +28,11 @@
           </div>
         </div>
         <div class="tab-content">
-          <qr-table></qr-table>
+          <qr-table :headerData="headerData"
+                    :tableData="tableData"
+                    :isTypeAll='isTypeAll'
+                    :isTypeUnused='isTypeUnused'
+                    :isOutdate='isOutdate'></qr-table>
         </div>
 
         <div class="tab-page" v-show="false">
@@ -63,36 +67,41 @@
     name: 'MyAccount',
     data() {
       return {
-        blank: false,
-        isTypeAll: true,
+        blank: true,
+        type:'',
+        isTypeAll: false,
         isTypeUnused: false,
         isOutdate: false,
+        headerData: [],
+        tableData: [],
+
         page: {
           currentPage: 1,
           total: 100,
           pageSize: 20,
         },
+
+
       }
     },
-    created:function () {
-      this.fetchData()
+    created: function () {
+      this.toTypeAll()
     },
 
 
     methods: {
-
       fetchData: function () {
         let userId = MyUtil.getUserId()
-        if(this.isTypeAll){
-          Request.requestAccountAllList(this,userId)
+        if (this.isTypeAll) {
+          Request.requestAccountAllList(this, userId,this.type)
           return
         }
-        if(this.isTypeUnused){
-          Request.requestAccountUnusedList(this,userId)
+        if (this.isTypeUnused) {
+          Request.requestAccountUnusedList(this, userId)
           return
         }
-        if(this.isOutdate){
-          Request.requestAccountOutdateList(this,userId)
+        if (this.isOutdate) {
+          Request.requestAccountOutdateList(this, userId)
           return
         }
       },
@@ -100,25 +109,31 @@
       addAccount: function () {
         MyUtil.linkToPath(this, '/account/add')
       },
-      toTypeAll:function () {
+      toTypeAll: function () {
+        this.type = 'all'
         this.isTypeAll = true
         this.isTypeUnused = false
         this.isOutdate = false
+        this.tableData=[]
         this.fetchData()
       },
-      toTypeUnused:function () {
+      toTypeUnused: function () {
+        this.type = 'unused'
         this.isTypeAll = false
         this.isTypeUnused = true
         this.isOutdate = false
+        this.tableData=[]
         this.fetchData()
       },
-      toOutdate:function () {
+      toOutdate: function () {
+        this.type = 'outdate'
         this.isTypeAll = false
         this.isTypeUnused = false
         this.isOutdate = true
+        this.tableData=[]
         this.fetchData()
       },
-      pageToChange:function (val) {
+      pageToChange: function (val) {
         this.page.currentPage = val
         this.fetchData()
       }
@@ -215,7 +230,7 @@
             }
           }
 
-          .tab:hover{
+          .tab:hover {
             span {
               color: rgba(46, 138, 230, 1);
             }
