@@ -17,12 +17,12 @@ export default {
   /*重置密码*/
   to_modify_password_url: host + '/rentBook/landlord/modifyPassword.do',
   // 账本相关
-  get_all_account_url: host + '/rentBook/book/AllUserBooks.do',
-  get_unused_account_url: host + '/rentBook/house/findIdleHouse.do',
-  get_outdate_account_url: host + '/rentBook/book/selectOverdue.do',
-  to_add_account_url: host + '/rentBook/house/addHousing.do',
-  to_edit_account_url:host+'/rentBook/update/updateAddress.do',
-  to_delete_account_url:host+'/rentBook/update/DelLedgers.do',
+  get_all_book_url: host + '/rentBook/book/AllUserBooks.do',
+  get_unused_book_url: host + '/rentBook/house/findIdleHouse.do',
+  get_outdate_book_url: host + '/rentBook/book/selectOverdue.do',
+  to_add_book_url: host + '/rentBook/house/addHousing.do',
+  to_edit_book_url:host+'/rentBook/update/updateAddress.do',
+  to_delete_book_url:host+'/rentBook/update/DelLedgers.do',
 
   //租客相关
   to_add_renter_url:host+'/rentBook/book/addBook.do',
@@ -30,7 +30,16 @@ export default {
   to_edit_renter_url:host+'/rentBook/update/updateTenantInfo.do',
   to_delete_renter_url:host+'/rentBook/checkOut/status.do',
 
-  //
+
+
+  //我的账单
+  get_all_bill_url:host+'/rentBook/book/AllSettle.do',
+  get_pay_bill_url:host+'/rentBook/book/selectSettle.do',
+  get_nopay_bill_url:host+'/rentBook/book/selectSettle.do',
+  get_bill_detail_url:host+'/rentBook/book/billsDetail.do',
+
+
+
   //内置路由
   login_router: '/login',
 

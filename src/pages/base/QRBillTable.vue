@@ -8,51 +8,32 @@
     </div>
 
     <div class="table-content">
-
       <div class="table-row" v-for="item in tableData">
-        <div class='table-house-use' :class="{'table-house-overdate': isOutdate}" v-if="!item.isUnused||isOutdate">
-          <!--有租客的房源-->
-          <span v-for="header in headerData" :style="{ 'width': header.width}">{{ item[header.prob] }}</span>
+
+        <div class='table-house-use'>
+
+          <div class="simple-item">
+            <span v-for="header in headerData" v-show="!(header.prob ==='payStatus')" :style="{ 'width': header.width }">{{ item[header.prob] }}</span>
+
+          </div>
 
           <el-popover
             placement="bottom"
             width="150"
             trigger="hover">
-            <el-button slot="reference" class="more-action">更多</el-button>
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="editAccount(item.houseId,item.province,item.city,item.houseName)">编辑账本
-            </el-button>
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="toRenterDetail(item.accountId)">
-              租客详情
-            </el-button>
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="deleteAccount('',item.accountId)">
-              删除账本
-            </el-button>
+            <div slot="reference" class="more-action-wrapper">
+              <el-button class="more-action-pay" v-show="item.isPay">已结清</el-button>
+              <el-button class="more-action-nopay"  v-show="!item.isPay">未结清</el-button>
+            </div>
 
-          </el-popover>
-
-        </div>
-        <div class='table-house-unuse' v-else>
-          <!--没有租客的房源-->
-          <span :style="{ 'width': headerData[0].width}">{{ item[headerData[0].prob]}}</span>
-          <span style="color:rgba(242,73,73,1);cursor: pointer;" @click="addRenter(item.houseId,item.houseName)">添加租客信息</span>
-          <span :style="{ 'width': headerData[2].width}"></span>
-          <span :style="{ 'width': headerData[3].width}"></span>
-
-          <el-popover
-            placement="bottom"
-            width="150"
-            trigger="hover">
-            <el-button slot="reference" class="more-action">更多</el-button>
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="editAccount(item.houseId,item.province,item.city,item.houseName)">编辑账本
-            </el-button>
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="deleteAccount(item.houseId,'')">
-              删除账本
+            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="toBillDetail(item.billId)">
+              查看详情
             </el-button>
 
           </el-popover>
+
+
         </div>
-
-
       </div>
 
     </div>
@@ -67,31 +48,17 @@
   import Request from '@/common/js/Request'
 
   export default {
-    name: "QRTable",
-    props:['headerData','tableData','isTypeAll','isTypeUnused','isOutdate'],
+    name: "QRBillTable",
+    props:['headerData','tableData',],
     data() {
       return {
       }
     },
     methods: {
-      addRenter: function (houseId,houseName) {
-        MyUtil.linkToPath(this, '/renter/add?houseId=' + houseId+'&houseName='+houseName)
-      },
-      toRenterDetail: function (accountId) {
 
-        MyUtil.linkToPath(this, '/renter/detail?accountId=' + accountId)
-      },
-      editAccount: function (houseId,province,city,houseName) {
-
-        MyUtil.linkToPath(this, '/book/edit?houseId='+ houseId+'&province='+province+'&city='+city+'&address='+houseName )
-      },
-      deleteAccount: function (houseId,accountId) {
-        Request.requestDeleteAccount(this,houseId,accountId)
-      },
-
-
-
-
+      toBillDetail:function (billId) {
+        MyUtil.linkToPath(this, '/bill/detail?billId='+billId)
+      }
     }
   }
 
@@ -103,20 +70,22 @@
   @import "../../common/less/index.less";
 
   .qr-table {
-    span {
-      padding-left: 30px;
-      box-sizing: border-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      word-break: keep-all;
-    }
+
 
     .table-header {
       background-color: #FFFFFF;
       margin-bottom: 2px;
       display: flex;
       flex-wrap: nowrap;
+
+      span {
+        padding-left: 30px;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: keep-all;
+      }
 
       .header-item {
         display: inline-block;
@@ -140,8 +109,21 @@
         line-height: 65px;
         margin-bottom: 1px;
 
-        .table-house-use, .table-house-unuse {
+        .table-house-use{
           display: flex;
+
+          .simple-item{
+            display: flex;
+
+            span {
+              padding-left: 30px;
+              box-sizing: border-box;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              word-break: keep-all;
+            }
+          }
         }
         span:first-child {
           font-size: 24px;
@@ -159,16 +141,30 @@
           color: #999999;
         }
 
-        .more-action {
-          color: #2E8AE6;
+        .more-action-wrapper{
+          /*margin-top: 50px;*/
+        }
+        .more-action-pay,.more-action-nopay{
+
           font-size: 18px;
           cursor: pointer;
-          margin-right: 30px;
+          margin-left: 0;
+          padding-left: 30px;
           &:hover, &:active, &:focus {
             background-color: white;
           }
 
         }
+
+        .more-action-pay{
+          color:rgba(41,204,57,1);
+        }
+
+        .more-action-nopay{
+          color:rgba(250,75,87,1);
+        }
+
+
 
       }
     }

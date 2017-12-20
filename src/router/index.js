@@ -3,13 +3,18 @@ import Router from 'vue-router'
 import Index from '@/pages/index/Index'
 import Login from '@/pages/login/Login'
 
-import MyAccount from '@/pages/index/account/MyAccount'
-import AddAccount from '@/pages/index/account/AddAccount'
+import MyBook from '@/pages/index/book/MyBook'
+import AddBook from '@/pages/index/book/AddBook'
 
 // import RenterDetail from '@/pages/index/renter/RenterDetail'
 import AddRenter from '@/pages/index/renter/AddRenter'
 
 import MyBill from '@/pages/index/bill/MyBill'
+import BillDetail from '@/pages/index/bill/BillDetail'
+
+//record
+import MyRecord from '@/pages/index/record/MyRecord'
+
 
 Vue.use(Router)
 
@@ -29,29 +34,29 @@ export default new Router({
 
     {
       path:'/home',
-      redirect:'/account'
+      redirect:'/book'
     },
 
-    //account我的账本
+    //Book我的账本
     {
-      path: '/account',
+      path: '/book',
       component: Index,
       children:[
         {
           path: '',
-          name: 'MyAccount',
-          component: MyAccount
+          name: 'MyBook',
+          component: MyBook
         },
 
         {
           path: 'add',
-          name: 'AddAccount',
-          component: AddAccount
+          name: 'AddBook',
+          component: AddBook
         },
         {
           path: 'edit',
-          name: 'EditAccount',
-          component: AddAccount
+          name: 'EditBook',
+          component: AddBook
         },
       ]
     },
@@ -94,14 +99,30 @@ export default new Router({
           name:'MyBill',
           component: MyBill
         },
-
+        {
+          path: 'detail',
+          name:'BillDetail',
+          component: BillDetail
+        },
       ]
     },
 
     //record交易记录
     {
       path: '/record',
-      component: Index
+      component: Index,
+      children:[
+        {
+          path: '',
+          name:'MyRecord',
+          component: MyRecord
+        },
+        // {
+        //   path: 'detail',
+        //   name:'BillDetail',
+        //   component: BillDetail
+        // },
+      ]
     },
 
     //money我的账户

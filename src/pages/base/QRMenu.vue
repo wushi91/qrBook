@@ -14,8 +14,8 @@ export default {
   name: 'QRMenu',
   data () {
     return {
-      type:'account',
-      typeAccount:'account',
+      type:'book',
+      typeAccount:'book',
       typeBill:'bill',
       typeRecord:'record',
       typeMoney:'money',
@@ -37,7 +37,7 @@ export default {
 
     fetchData: function () {
       var fullPath = this.$route.fullPath
-      if(fullPath==='/account'){
+      if(fullPath==='/book'){
         this.type = this.typeAccount
       }
 

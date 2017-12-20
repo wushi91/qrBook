@@ -1,38 +1,38 @@
 <template>
-  <div class="bill right-content-wrapper">
-    <div class="bill-blank" v-show="blank">
-      <div class="bill-blank-image"></div><span>你还没有账本</span>
+  <div class="book right-content-wrapper">
+    <div class="book-blank" v-show="blank">
+      <div class="book-blank-image" v-show="false"></div>
+      <span>你还没有新建账本</span>
+      <button @click="addBook">新建账本</button>
     </div>
 
-    <div class="bill-book" v-show="!blank">
+    <div class="book-book" v-show="!blank">
       <div class="mytabs">
+
         <div class="tab-header">
           <div class="tab" :class="{ 'tab-selected': isTypeAll}" @click="toTypeAll">
             <span>全部</span>
             <div class="underline"></div>
           </div>
-          <div class="tab" :class="{ 'tab-selected': isTypePay}" @click="toTypePay">
-            <span>未结清</span>
+          <div class="tab" :class="{ 'tab-selected': isTypeUnused}" @click="toTypeUnused">
+            <span>闲置</span>
             <div class="underline"></div>
           </div>
-          <div class="tab" :class="{ 'tab-selected': isTypeNoPay}" @click="toTypeNoPay">
-            <span>已结清</span>
+          <div class="tab" :class="{ 'tab-selected': isOutdate}" @click="toOutdate">
+            <span>逾期</span>
             <div class="underline"></div>
           </div>
-          <!--v-model="value4"-->
-          <div class="div-tab-button">
-            <el-date-picker
 
-              type="month"
-              v-show="false"
-              placeholder="选择月">
-            </el-date-picker>
+          <div class="div-tab-button">
+            <button @click="addBook">新建账本</button>
           </div>
         </div>
         <div class="tab-content">
-          <qr-bill-table :headerData="headerData"
+          <qr-table :headerData="headerData"
                     :tableData="tableData"
-          ></qr-bill-table>
+                    :isTypeAll='isTypeAll'
+                    :isTypeUnused='isTypeUnused'
+                    :isOutdate='isOutdate'></qr-table>
         </div>
 
         <div class="tab-page" v-show="false">
@@ -59,19 +59,19 @@
 <script>
 
   import MyUtil from '@/common/js/MyUtil.js'
-  import QRBillTable from '@/pages/base/QRBillTable'
+  import QRTable from '@/pages/base/QRTable'
 
   import Request from '@/common/js/Request'
 
   export default {
-    name: 'MyBill',
+    name: 'MyBook',
     data() {
       return {
-        blank: false,
+        blank: true,
         type:'',
         isTypeAll: false,
-        isTypePay: false,
-        isTypeNoPay: false,
+        isTypeUnused: false,
+        isOutdate: false,
         headerData: [],
         tableData: [],
 
@@ -93,43 +93,43 @@
       fetchData: function () {
         let userId = MyUtil.getUserId()
         if (this.isTypeAll) {
-          Request.requestBillAllList(this, userId)
+          Request.requestBookAllList(this, userId,this.type)
           return
         }
-        if (this.isTypePay) {
-          Request.requestBillByPatStatusList(this, userId,'未结清')
+        if (this.isTypeUnused) {
+          Request.requestBookUnusedList(this, userId)
           return
         }
-        if (this.isTypeNoPay) {
-          Request.requestBillByPatStatusList(this, userId,'已结清')
+        if (this.isOutdate) {
+          Request.requestBookOutdateList(this, userId)
           return
         }
       },
 
-      addAccount: function () {
+      addBook: function () {
         MyUtil.linkToPath(this, '/book/add')
       },
       toTypeAll: function () {
         this.type = 'all'
         this.isTypeAll = true
-        this.isTypePay = false
-        this.isTypeNoPay = false
+        this.isTypeUnused = false
+        this.isOutdate = false
         this.tableData=[]
         this.fetchData()
       },
-      toTypePay: function () {
-        this.type = 'pay'
+      toTypeUnused: function () {
+        this.type = 'unused'
         this.isTypeAll = false
-        this.isTypePay = true
-        this.isTypeNoPay = false
+        this.isTypeUnused = true
+        this.isOutdate = false
         this.tableData=[]
         this.fetchData()
       },
-      toTypeNoPay: function () {
-        this.type = 'nopay'
+      toOutdate: function () {
+        this.type = 'outdate'
         this.isTypeAll = false
-        this.isTypePay = false
-        this.isTypeNoPay = true
+        this.isTypeUnused = false
+        this.isOutdate = true
         this.tableData=[]
         this.fetchData()
       },
@@ -139,7 +139,7 @@
       }
     },
     components: {
-      'qr-bill-table': QRBillTable,
+      'qr-table': QRTable,
     },
   }
 </script>
@@ -149,19 +149,19 @@
 
   @import "../../../common/less/index.less";
 
-  .bill {
+  .book {
     /*background-color: @content-bg;*/
     min-height: 100%;
     display: flex;
-    .bill-blank {
+    .book-blank {
       width: 200px;
       margin: auto;
       margin-top: 124px;
 
-      .bill-blank-image{
+      .book-blank-image {
         margin: auto;
         width: 90px;
-        height:90px;
+        height: 90px;
         background-color: darkgrey;
       }
 
@@ -187,7 +187,7 @@
       }
     }
 
-    .bill-book {
+    .book-book {
       display: flex;
       flex: 1;
       .mytabs {

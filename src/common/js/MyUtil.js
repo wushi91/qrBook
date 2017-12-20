@@ -97,14 +97,13 @@ export default {
     //全部账本allAccountHeaderData
     //闲置账本unusedAccountHeaderData
     //逾期账本outDateHeaderData
-    let allAccountHeaderData = [
+    let allBookHeaderData = [
       {label: '房源名称', prob: 'houseName', width: '340px'},
       {label: '租客', prob: 'renterName', width: '138px'},
       {label: '租期', prob: 'rentStartToOver', width: '250px'},
       {label: '每月租金', prob: 'rentMoney', width: '125px'},
     ]
-
-    let unusedAccountHeaderData = [
+    let unusedBookHeaderData = [
       {label: '房源名称', prob: 'houseName', width: '340px'},
       {label: '租客', prob: 'renterName', width: '138px'},
       {label: '', prob: 'ss', width: '250px'},
@@ -116,13 +115,34 @@ export default {
       {label: '交租日期', prob: 'rentPayDate', width: '250px'},
       {label: '逾期金额', prob: 'outdateMoney', width: '125px'},]
 
+
+    let billHeaderData = [
+      {label: '房源名称', prob: 'houseName', width: '340px'},
+      {label: '租客', prob: 'renterName', width: '138px'},
+      {label: '租期', prob: 'rentStartToOver', width: '250px'},
+      {label: '每月租金', prob: 'rentMoney', width: '125px'},
+      {label: '收租状态', prob: 'payStatus', width: '125px'},
+    ]
+
+    let recordHeaderData = [
+      {label: '房源名称', prob: 'houseName', width: '340px'},
+      {label: '租客', prob: 'renterName', width: '138px'},
+      {label: '租期', prob: 'rentStartToOver', width: '250px'},
+      {label: '每月租金', prob: 'rentMoney', width: '125px'},
+      {label: '收租状态', prob: 'payStatus', width: '125px'},
+    ]
+
     switch (type) {
-      case 'all':
-        return allAccountHeaderData
-      case 'unused':
-        return unusedAccountHeaderData
-      case 'outdate':
+      case 'book-all':
+        return billHeaderData
+      case 'book-unused':
+        return unusedBookHeaderData
+      case 'book-outdate':
         return outdateHeaderData
+      case 'bill-all':
+      case 'bill-pay':
+      case 'bill-nopay':
+        return billHeaderData
     }
   },
   getTableData: function (list) {
@@ -160,9 +180,11 @@ export default {
           outdateLength:item.overdueNum,
           outdateMoney:item.rent,
 
+          //自定义字段
+          rentStartToOver:this.getFormateDate(item.start_time)+' - '+this.getFormateDate(item.end_time),
 
-
-
+          isPay:item.settle==='是',
+          billId:item.id,
         }
 
 
@@ -186,10 +208,16 @@ export default {
       tableData.push(newItem)
     }
     return tableData
+  },
+
+  getFormateDate:function (time) {
+    let date = new Date(time)
+    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
   }
 
-
 }
+
+
 
 //
 // let tableData = [

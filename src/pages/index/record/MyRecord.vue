@@ -1,38 +1,18 @@
 <template>
-  <div class="account right-content-wrapper">
-    <div class="account-blank" v-show="blank">
-      <div class="account-blank-image" v-show="false"></div>
-      <span>你还没有新建账本</span>
-      <button @click="addAccount">新建账本</button>
+  <div class="record right-content-wrapper">
+    <div class="record-blank" v-show="blank">
+      <div class="record-blank-image"></div><span>你还没有交易记录</span>
     </div>
 
-    <div class="account-book" v-show="!blank">
+    <div class="record-book" v-show="!blank">
       <div class="mytabs">
-
-        <div class="tab-header">
-          <div class="tab" :class="{ 'tab-selected': isTypeAll}" @click="toTypeAll">
-            <span>全部</span>
-            <div class="underline"></div>
-          </div>
-          <div class="tab" :class="{ 'tab-selected': isTypeUnused}" @click="toTypeUnused">
-            <span>闲置</span>
-            <div class="underline"></div>
-          </div>
-          <div class="tab" :class="{ 'tab-selected': isOutdate}" @click="toOutdate">
-            <span>逾期</span>
-            <div class="underline"></div>
-          </div>
-
-          <div class="div-tab-button">
-            <button @click="addAccount">新建账本</button>
-          </div>
+        <div>
+          <h1>ssssssssss</h1>
         </div>
         <div class="tab-content">
-          <qr-table :headerData="headerData"
+          <qr-record-table :headerData="headerData"
                     :tableData="tableData"
-                    :isTypeAll='isTypeAll'
-                    :isTypeUnused='isTypeUnused'
-                    :isOutdate='isOutdate'></qr-table>
+          ></qr-record-table>
         </div>
 
         <div class="tab-page" v-show="false">
@@ -59,19 +39,16 @@
 <script>
 
   import MyUtil from '@/common/js/MyUtil.js'
-  import QRTable from '@/pages/base/QRTable'
+  import QRRecordTable from '@/pages/base/QRRecordTable'
 
   import Request from '@/common/js/Request'
 
   export default {
-    name: 'MyAccount',
+    name: 'MyTradeRecord',
     data() {
       return {
-        blank: true,
+        blank: false,
         type:'',
-        isTypeAll: false,
-        isTypeUnused: false,
-        isOutdate: false,
         headerData: [],
         tableData: [],
 
@@ -85,61 +62,22 @@
       }
     },
     created: function () {
-      this.toTypeAll()
+
     },
 
 
     methods: {
       fetchData: function () {
-        let userId = MyUtil.getUserId()
-        if (this.isTypeAll) {
-          Request.requestAccountAllList(this, userId,this.type)
-          return
-        }
-        if (this.isTypeUnused) {
-          Request.requestAccountUnusedList(this, userId)
-          return
-        }
-        if (this.isOutdate) {
-          Request.requestAccountOutdateList(this, userId)
-          return
-        }
       },
 
-      addAccount: function () {
-        MyUtil.linkToPath(this, '/account/add')
-      },
-      toTypeAll: function () {
-        this.type = 'all'
-        this.isTypeAll = true
-        this.isTypeUnused = false
-        this.isOutdate = false
-        this.tableData=[]
-        this.fetchData()
-      },
-      toTypeUnused: function () {
-        this.type = 'unused'
-        this.isTypeAll = false
-        this.isTypeUnused = true
-        this.isOutdate = false
-        this.tableData=[]
-        this.fetchData()
-      },
-      toOutdate: function () {
-        this.type = 'outdate'
-        this.isTypeAll = false
-        this.isTypeUnused = false
-        this.isOutdate = true
-        this.tableData=[]
-        this.fetchData()
-      },
+
       pageToChange: function (val) {
         this.page.currentPage = val
         this.fetchData()
       }
     },
     components: {
-      'qr-table': QRTable,
+      'qr-record-table': QRRecordTable,
     },
   }
 </script>
@@ -149,19 +87,19 @@
 
   @import "../../../common/less/index.less";
 
-  .account {
+  .bill {
     /*background-color: @content-bg;*/
     min-height: 100%;
     display: flex;
-    .account-blank {
+    .bill-blank {
       width: 200px;
       margin: auto;
       margin-top: 124px;
 
-      .account-blank-image {
+      .bill-blank-image{
         margin: auto;
         width: 90px;
-        height: 90px;
+        height:90px;
         background-color: darkgrey;
       }
 
@@ -187,7 +125,7 @@
       }
     }
 
-    .account-book {
+    .bill-book {
       display: flex;
       flex: 1;
       .mytabs {

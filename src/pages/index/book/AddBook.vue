@@ -1,9 +1,9 @@
 <template>
-  <div class="add-account">
+  <div class="add-book">
 
     <qr-back></qr-back>
 
-    <div class="add-account-content">
+    <div class="add-book-content">
       <span class="title" v-show="isTypeAdd">新建账本</span>
       <span class="title" v-show="isTypeEdit">编辑账本</span>
       <span class="city">房源所在城市</span>
@@ -12,8 +12,8 @@
       <textarea rows='3' class="form-text" v-model="address" placeholder="请填写详细的房源地址、房号等信息"></textarea>
 
       <div class="btn-wrapper" >
-        <button v-show="isTypeAdd" @click="toSaveAccount">保存</button>
-        <button v-show="isTypeEdit" @click="toEditAccount" >保存修改</button>
+        <button v-show="isTypeAdd" @click="toSaveBook">保存</button>
+        <button v-show="isTypeEdit" @click="toEditBook" >保存修改</button>
       </div>
     </div>
 
@@ -27,7 +27,7 @@
   import Request from '@/common/js/Request'
 
   export default {
-    name: 'AddAccount',
+    name: 'AddBook',
     data() {
       return {
 
@@ -56,8 +56,8 @@
 
       fetchData: function () {
         let path = this.$route.path
-        let addPath = '/account/add'
-        let editPath = '/account/edit'
+        let addPath = '/book/add'
+        let editPath = '/book/edit'
         switch (path) {
           case addPath:
             this.isTypeAdd = true
@@ -73,15 +73,15 @@
             break;
         }
       },
-      toSaveAccount: function () {
-        console.log('toSaveAccount')
+      toSaveBook: function () {
+        console.log('toSaveBook')
         let userId = MyUtil.getUserId()
-        Request.requestAddAccount(this, userId, this.province, this.city, this.address)
+        Request.requestAddBook(this, userId, this.province, this.city, this.address)
       },
-      toEditAccount:function () {
-        console.log('toEditAccount')
+      toEditBook:function () {
+        console.log('toEditBook')
         let userId = MyUtil.getUserId()
-        Request.requestEditAccount(this, userId,this.houseId, this.province, this.city, this.address)
+        Request.requestEditBook(this, userId,this.houseId, this.province, this.city, this.address)
 
       }
 
@@ -95,11 +95,11 @@
 
   @import "../../../common/less/index.less";
 
-  .add-account {
+  .add-book {
     min-height: 100%;
     background: white;
 
-    .add-account-content {
+    .add-book-content {
       margin-left: 150px;
 
       span {

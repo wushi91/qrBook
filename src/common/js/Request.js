@@ -70,14 +70,14 @@ export default {
   },
 
   //获取账本list
-  requestAccountAllList: function (context, userId) {
+  requestBookAllList: function (context, userId) {
     let data = {
       params: {
         user_id: userId,
       }
     }
-    console.log('requestAccountAllList')
-    MyUtil.axioGet(Api.get_all_account_url, data, function (response) {
+    console.log('requestBookAllList')
+    MyUtil.axioGet(Api.get_all_book_url, data, function (response) {
 
       console.log('返回的data')
       console.log(response.data)
@@ -91,50 +91,50 @@ export default {
       } else {
         context.blank = false
       }
-      context.headerData = MyUtil.getHeaderData('all')
+      context.headerData = MyUtil.getHeaderData('book-all')
       context.tableData = MyUtil.getTableData(list)
 
     })
   },
 
   //获取账本闲置list
-  requestAccountUnusedList: function (context, userId) {
+  requestBookUnusedList: function (context, userId) {
     let data = {
       params: {
         user_id: userId,
       }
     }
-    console.log('requestAccountUnusedList')
-    MyUtil.axioGet(Api.get_unused_account_url, data, function (response) {
+    console.log('requestBookUnusedList')
+    MyUtil.axioGet(Api.get_unused_book_url, data, function (response) {
       console.log('闲置数据返回')
       console.log(response.data)
       var list = response.data.Nolist
-      context.headerData = MyUtil.getHeaderData('unused')
+      context.headerData = MyUtil.getHeaderData('book-unused')
       context.tableData = MyUtil.getTableData(list)
     })
   },
 
 
   //获取账本逾期list
-  requestAccountOutdateList: function (context, userId) {
+  requestBookOutdateList: function (context, userId) {
     let data = {
       params: {
         user_id: userId,
       }
     }
-    console.log('requestAccountOutdateList')
-    MyUtil.axioGet(Api.get_outdate_account_url, data, function (response) {
+    console.log('requestBookOutdateList')
+    MyUtil.axioGet(Api.get_outdate_book_url, data, function (response) {
       console.log('逾期数据返回')
       console.log(response.data)
 
       var list = response.data.list
-      context.headerData = MyUtil.getHeaderData('outdate')
+      context.headerData = MyUtil.getHeaderData('book-outdate')
       context.tableData = MyUtil.getTableData(list)
     })
   },
 
   //新建账本
-  requestAddAccount: function (context, userId, province, city, address) {
+  requestAddBook: function (context, userId, province, city, address) {
     let data = {
       params: {
         user_id: userId,
@@ -143,8 +143,8 @@ export default {
         address: address,
       }
     }
-    console.log('requestAddAccount')
-    MyUtil.axioGet(Api.to_add_account_url, data, function (response) {
+    console.log('requestAddBook')
+    MyUtil.axioGet(Api.to_add_book_url, data, function (response) {
       MyUtil.toastSuccess(context, '添加账本成功，即将返回', 800)
       MyUtil.laterTodo(function () {
         MyUtil.goPageBack(context)
@@ -153,7 +153,7 @@ export default {
   },
 
   //编辑账本
-  requestEditAccount: function (context, userId,houseId, province, city, address) {
+  requestEditBook: function (context, userId,houseId, province, city, address) {
     let data = {
       params: {
         // user_id: userId,
@@ -163,8 +163,8 @@ export default {
         address: address,
       }
     }
-    console.log('requestEditAccount')
-    MyUtil.axioGet(Api.to_edit_account_url, data, function (response) {
+    console.log('requestEditBook')
+    MyUtil.axioGet(Api.to_edit_Book_url, data, function (response) {
       MyUtil.toastSuccess(context, '保存成功，即将返回', 800)
       MyUtil.laterTodo(function () {
         MyUtil.goPageBack(context)
@@ -173,28 +173,30 @@ export default {
   },
 
   //删除账本
-  requestDeleteAccount: function (context,accountId) {
+  requestDeleteBook: function (context,houseId,BookId) {
     let data = {
       params: {
         // user_id: userId,
-        id:accountId,
+        hid:houseId,
+        id:BookId,
+
       }
     }
 
-    console.log(accountId)
-    console.log('requestDeleteAccount')
-    MyUtil.axioGet(Api.to_delete_account_url, data, function (response) {
-      MyUtil.toastSuccess(context, '删除成功，即将返回', 800)
+    console.log(BookId)
+    console.log('requestDeleteBook')
+    MyUtil.axioGet(Api.to_delete_Book_url, data, function (response) {
+      MyUtil.toastSuccess(context, '删除成功', 800)
 
     })
   },
 
 
   //房客详情
-  requestRenterDeatil: function (context, accountId) {
+  requestRenterDeatil: function (context, BookId) {
     let data = {
       params: {
-        id: accountId,
+        id: BookId,
       }
     }
     console.log('requestRenterDeatil')
@@ -205,7 +207,7 @@ export default {
       let renter = response.data.list
 
       context.houseId = renter.hid
-      context.accountId = renter.id
+      context.BookId = renter.id
       context.renterName = renter.name
       context.renterPhone = renter.phone
       context.rentStartDate = new Date(renter.start_time)
@@ -247,11 +249,11 @@ export default {
   },
 
   //编辑租客
-  requestEditRenter: function (context, userId, accountId,hid, name, phone, start_time, end_time, rent_month, pay_type, pay_time, security_deposit, rent) {
+  requestEditRenter: function (context, userId, BookId,hid, name, phone, start_time, end_time, rent_month, pay_type, pay_time, security_deposit, rent) {
     let data = {
       params: {
         // user_id: userId,//房东编号
-        book_id:accountId,//账本编号
+        book_id:BookId,//账本编号
         hid: hid,//房源编号
         name: name,
         phone: phone,
@@ -275,11 +277,11 @@ export default {
   },
 
   //删除租客
-  requestDeleteRender: function (context,accountId) {
+  requestDeleteRender: function (context,BookId) {
     let data = {
       params: {
         // user_id: userId,
-        id:accountId,
+        id:BookId,
       }
     }
 
@@ -292,20 +294,97 @@ export default {
     })
   },
 
+
+  //获取所有的账单list
+  requestBillAllList: function (context, userId) {
+    let data = {
+      params: {
+        user_id: userId,
+      }
+    }
+    console.log('requestBillAllList')
+    MyUtil.axioGet(Api.get_all_bill_url, data, function (response) {
+      console.log(response.data)
+      //闲置的房源
+      var list = response.data.list
+
+      if (list.length === 0) {
+        context.blank =true
+      } else {
+        context.blank = false
+      }
+      context.headerData = MyUtil.getHeaderData('bill-all')
+      context.tableData = MyUtil.getTableData(list)
+
+    })
+  },
+
+  //获取未结清-已结清账单list
+  requestBillByPatStatusList: function (context, userId,padStatus) {
+    let data = {
+      params: {
+        user_id: userId,
+        settle:padStatus
+      }
+    }
+    console.log('requestBillByPatStatusList')
+    MyUtil.axioGet(Api.get_pay_bill_url, data, function (response) {
+      console.log(response.data)
+      //闲置的房源
+      var list = response.data.list
+
+      context.headerData = MyUtil.getHeaderData('bill-all')
+      context.tableData = MyUtil.getTableData(list)
+
+    })
+  },
+
+
+  //账单详情
+  requestBillDeatil: function (context, userId,billId) {
+    let data = {
+      params: {
+        user_id: userId,
+        id: billId,
+      }
+    }
+    console.log('requestBillDeatil')
+    MyUtil.axioGet(Api.get_bill_detail_url, data, function (response) {
+
+      console.log('账单详情')
+      console.log(response.data)
+      let bill = response.data.list[0]
+
+      context.houseName = bill.address
+      context.payDate =bill.pay_time+'号'
+
+      context.billMoney =bill.rent
+      context.renterName = bill.name
+      context.renterPhone = bill.phone
+
+      context.renterMoneyTime = MyUtil.getFormateDate(bill.start_time)+' - '+MyUtil.getFormateDate(bill.end_time)
+
+      context.isPay = bill.settle==='是'
+
+    })
+  },
+
+
+
 }
 
 
-// requestAccountList: function (context, type, pageNum, pageSize) {
+// requestBookList: function (context, type, pageNum, pageSize) {
 //   let url = ''
 //   switch (type) {
 //     case 'all':
-//       url = Api.get_all_account_url
+//       url = Api.get_all_Book_url
 //       break;
 //     case 'unused':
-//       url = Api.get_unused_account_url
+//       url = Api.get_unused_Book_url
 //       break;
 //     case 'outdate':
-//       url = Api.get_outdate_account_url
+//       url = Api.get_outdate_Book_url
 //       break;
 //   }
 // }
