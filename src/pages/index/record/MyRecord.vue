@@ -4,11 +4,9 @@
       <div class="record-blank-image"></div><span>你还没有交易记录</span>
     </div>
 
-    <div class="record-book" v-show="!blank">
+    <div class="record-content" v-show="!blank">
       <div class="mytabs">
-        <div>
-          <h1>ssssssssss</h1>
-        </div>
+
         <div class="tab-content">
           <qr-record-table :headerData="headerData"
                     :tableData="tableData"
@@ -40,7 +38,6 @@
 
   import MyUtil from '@/common/js/MyUtil.js'
   import QRRecordTable from '@/pages/base/QRRecordTable'
-
   import Request from '@/common/js/Request'
 
   export default {
@@ -49,8 +46,14 @@
       return {
         blank: false,
         type:'',
-        headerData: [],
-        tableData: [],
+        headerData: MyUtil.getHeaderData('record-all'),
+        tableData: [{recordTime:'2017-10-12',recordName:'手足2015',recordMoney:'55500',recordStauts:'交易成功'},
+          {recordTime:'2017-10-12',recordName:'手足2015',recordMoney:'55500',recordStauts:'交易成功'},
+          {recordTime:'2017-10-12',recordName:'手足2015',recordMoney:'55500',recordStauts:'交易成功'},
+          {recordTime:'2017-10-12',recordName:'手足2015',recordMoney:'55500',recordStauts:'交易成功'},],
+
+
+
 
         page: {
           currentPage: 1,
@@ -70,7 +73,6 @@
       fetchData: function () {
       },
 
-
       pageToChange: function (val) {
         this.page.currentPage = val
         this.fetchData()
@@ -87,16 +89,16 @@
 
   @import "../../../common/less/index.less";
 
-  .bill {
+  .record {
     /*background-color: @content-bg;*/
     min-height: 100%;
     display: flex;
-    .bill-blank {
+    .record-blank {
       width: 200px;
       margin: auto;
       margin-top: 124px;
 
-      .bill-blank-image{
+      .record-blank-image{
         margin: auto;
         width: 90px;
         height:90px;
@@ -125,7 +127,7 @@
       }
     }
 
-    .bill-book {
+    .record-content {
       display: flex;
       flex: 1;
       .mytabs {

@@ -114,7 +114,6 @@ export default {
     })
   },
 
-
   //获取账本逾期list
   requestBookOutdateList: function (context, userId) {
     let data = {
@@ -190,7 +189,6 @@ export default {
 
     })
   },
-
 
   //房客详情
   requestRenterDeatil: function (context, BookId) {
@@ -294,7 +292,6 @@ export default {
     })
   },
 
-
   //获取所有的账单list
   requestBillAllList: function (context, userId) {
     let data = {
@@ -339,7 +336,6 @@ export default {
     })
   },
 
-
   //账单详情
   requestBillDeatil: function (context, userId,billId) {
     let data = {
@@ -369,6 +365,52 @@ export default {
     })
   },
 
+  //所有交易记录
+  requsetRecordAllList:function (context, userId) {
+    let data = {
+      params: {
+        user_id: userId,
+      }
+    }
+    console.log('requsetRecordAllList')
+
+    MyUtil.axioGet(Api.get_all_record_url, data, function (response) {
+      console.log(response.data)
+
+      var list = response.data.list
+
+      if (list.length === 0) {
+        context.blank =true
+      } else {
+        context.blank = false
+      }
+      context.headerData = MyUtil.getHeaderData('record-all')
+      context.tableData = MyUtil.getTableData(list)
+
+    })
+
+  },
+
+  //所有记录详情
+  requestRecordDeatil:function (context, userId,recordId) {
+
+    let data = {
+      // params: {
+      //   user_id: userId,
+      //   id: recordId,
+      // }
+    }
+
+    console.log('requestRecorddeatil')
+    MyUtil.axioGet(Api.get_record_detail_url, data, function (response) {
+
+      console.log('记录详情')
+      console.log(response.data)
+      let record = response.data.list
+
+    })
+
+  }
 
 
 }

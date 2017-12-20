@@ -13,7 +13,7 @@
         <div class='table-house-use'>
 
           <span v-for="header in headerData" :style="{ 'width': header.width}">{{ item[header.prob] }}</span>
-          <span >详情</span>
+          <span class="detail-action" @click="toRecordDetail">详情</span>
         </div>
       </div>
     </div>
@@ -35,7 +35,10 @@
       }
     },
     methods: {
-
+      toRecordDetail:function () {
+        console.log('sssssssssssssssssssssssssss')
+        MyUtil.linkToPath(this, '/record/detail')
+      }
     }
   }
 
@@ -87,26 +90,20 @@
         .table-house-use, .table-house-unuse {
           display: flex;
         }
-        span:first-child {
-          font-size: 24px;
-          color: rgba(51, 51, 51, 1);
-        }
 
-        .table-house-overdate {
-          span:nth-child(2) {
-            color: rgba(242, 73, 73, 1)
-          }
-        }
+
+
 
         span {
           font-size: 18px;
-          color: #999999;
+          color: rgba(51, 51, 51, 1);
         }
 
-        .more-action {
+        .detail-action {
           color: #2E8AE6;
           font-size: 18px;
           cursor: pointer;
+          margin-left: 70px;
           margin-right: 30px;
           &:hover, &:active, &:focus {
             background-color: white;

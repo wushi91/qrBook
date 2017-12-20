@@ -125,16 +125,15 @@ export default {
     ]
 
     let recordHeaderData = [
-      {label: '房源名称', prob: 'houseName', width: '340px'},
-      {label: '租客', prob: 'renterName', width: '138px'},
-      {label: '租期', prob: 'rentStartToOver', width: '250px'},
-      {label: '每月租金', prob: 'rentMoney', width: '125px'},
-      {label: '收租状态', prob: 'payStatus', width: '125px'},
+      {label: '时间', prob: 'recordTime', width: '138px'},
+      {label: '名称', prob: 'recordName', width: '340px'},
+      {label: '金额', prob: 'recordMoney', width: '250px'},
+      {label: '状态', prob: 'recordStauts', width: '125px'},
     ]
 
     switch (type) {
       case 'book-all':
-        return billHeaderData
+        return allBookHeaderData
       case 'book-unused':
         return unusedBookHeaderData
       case 'book-outdate':
@@ -143,8 +142,12 @@ export default {
       case 'bill-pay':
       case 'bill-nopay':
         return billHeaderData
+      case 'record-all':
+        return recordHeaderData
     }
   },
+
+
   getTableData: function (list) {
     //全部账本allAccountHeaderData
     //闲置账本unusedAccountHeaderData
@@ -152,7 +155,6 @@ export default {
 
     let tableData =[]
     for(let i=0;i<list.length;i++) {
-
       let item = list[i]
       let newItem =
         {

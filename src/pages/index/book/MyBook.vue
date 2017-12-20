@@ -6,7 +6,7 @@
       <button @click="addBook">新建账本</button>
     </div>
 
-    <div class="book-book" v-show="!blank">
+    <div class="book-content" v-show="!blank">
       <div class="mytabs">
 
         <div class="tab-header">
@@ -187,7 +187,7 @@
       }
     }
 
-    .book-book {
+    .book-content {
       display: flex;
       flex: 1;
       .mytabs {

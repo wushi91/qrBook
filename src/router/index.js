@@ -14,6 +14,11 @@ import BillDetail from '@/pages/index/bill/BillDetail'
 
 //record
 import MyRecord from '@/pages/index/record/MyRecord'
+import RecordDetail from '@/pages/index/record/RecordDetail'
+
+//money
+import MyMoney from '@/pages/index/money/MyMoney'
+
 
 
 Vue.use(Router)
@@ -30,13 +35,10 @@ export default new Router({
       name: 'Login',
       component: Login
     },
-
-
     {
       path:'/home',
       redirect:'/book'
     },
-
     //Book我的账本
     {
       path: '/book',
@@ -60,7 +62,6 @@ export default new Router({
         },
       ]
     },
-
     //render租客
     {
       path: '/renter',
@@ -87,8 +88,6 @@ export default new Router({
         },
       ]
     },
-
-
     //bill我的账单
     {
       path: '/bill',
@@ -106,7 +105,6 @@ export default new Router({
         },
       ]
     },
-
     //record交易记录
     {
       path: '/record',
@@ -117,21 +115,27 @@ export default new Router({
           name:'MyRecord',
           component: MyRecord
         },
-        // {
-        //   path: 'detail',
-        //   name:'BillDetail',
-        //   component: BillDetail
-        // },
+        {
+          path: 'detail',
+          name:'RecordDetail',
+          component: RecordDetail
+        },
       ]
     },
-
     //money我的账户
     {
       path: '/money',
-      component: Index
+      component: Index,
+
+      children:[
+        {
+          path: '',
+          name:'MyMoney',
+          component: MyMoney
+        },
+
+      ]
     },
-
-
 
   ]
 })
