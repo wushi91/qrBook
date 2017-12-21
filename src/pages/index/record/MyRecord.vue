@@ -44,15 +44,10 @@
     name: 'MyTradeRecord',
     data() {
       return {
-        blank: false,
+        blank: true,
         type:'',
-        headerData: MyUtil.getHeaderData('record-all'),
-        tableData: [{recordTime:'2017-10-12',recordName:'手足2015',recordMoney:'55500',recordStauts:'交易成功'},
-          {recordTime:'2017-10-12',recordName:'手足2015',recordMoney:'55500',recordStauts:'交易成功'},
-          {recordTime:'2017-10-12',recordName:'手足2015',recordMoney:'55500',recordStauts:'交易成功'},
-          {recordTime:'2017-10-12',recordName:'手足2015',recordMoney:'55500',recordStauts:'交易成功'},],
-
-
+        headerData: [],
+        tableData: [],
 
 
         page: {
@@ -65,7 +60,8 @@
       }
     },
     created: function () {
-
+      let userId = MyUtil.getUserId()
+      Request.requsetRecordAllList(this, userId)
     },
 
 
@@ -102,7 +98,7 @@
         margin: auto;
         width: 90px;
         height:90px;
-        background-color: darkgrey;
+        background: url("../../../common/image/record-content-blank-img.png") no-repeat;
       }
 
       span {

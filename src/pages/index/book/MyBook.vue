@@ -1,7 +1,7 @@
 <template>
   <div class="book right-content-wrapper">
     <div class="book-blank" v-show="blank">
-      <div class="book-blank-image" v-show="false"></div>
+      <div class="book-blank-image"></div>
       <span>你还没有新建账本</span>
       <button @click="addBook">新建账本</button>
     </div>
@@ -162,7 +162,7 @@
         margin: auto;
         width: 90px;
         height: 90px;
-        background-color: darkgrey;
+        background: url("../../../common/image/bill-content-blank-img.png") no-repeat;
       }
 
       span {

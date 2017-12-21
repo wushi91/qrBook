@@ -6,7 +6,7 @@
     <div class="record-detail-content">
 
       <!--内容-->
-      <div v-if="isTypeRent">
+      <div class="rent-record" v-if="isTypeRent">
       <span class="house-name" v-text="houseName">房源名称</span>
 
       <div class="record-item record-money">
@@ -35,10 +35,10 @@
       </div>
       </div>
 
-      <div v-else>
-        <span class="house-name" >提现</span>
+      <div class="cash-record" v-else>
+        <span class="house-name">提现</span>
 
-        <div class="record-item">
+        <div class="record-item record-money">
           <span>提现金额</span>
           <span v-text="moneyToCash"></span>
         </div>
@@ -82,14 +82,15 @@
       return {
         isTypeRent:true,
 
-        houseName: '111',
-        rentMoney:'222',
-        rentMoneyTime:'333',
-        currentStatus:"交易成功",
-        payTime:'4444',
-        payWay:'555',
-        orderNum:'666',
-        moneyToCash:'777'
+        houseName: '',
+        rentMoney:'',
+        rentMoneyTime:'',
+        currentStatus:"",
+        payTime:'',
+        payWay:'',
+        orderNum:'',
+        moneyToCash:''
+
       }
     },
     components: {
@@ -105,7 +106,8 @@
     },
     methods: {
       fetchData: function () {
-        this.recordId = this.$route.query.recordId
+        this.payId = this.$route.query.payId
+        this.recordType = this.$route.query.recordType
       },
 
       goPageBack: function () {
@@ -114,13 +116,15 @@
 
       getRecordDetail:function () {
         let userId = MyUtil.getUserId()
-        if (!this.recordId) {
+        if (!this.payId||!this.recordType) {
           MyUtil.toastError(this,'找不到对应的记录')
         }else{
-          Request.requestRecordDeatil(this,userId,this.recordId)
+          Request.requestRecordDeatil(this,userId,this.recordType,this.payId)
         }
 
       },
+
+
 
     }
   }

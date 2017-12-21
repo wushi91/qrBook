@@ -1,9 +1,11 @@
 <template>
   <div class="header">
-    <span class="img-header"><img></span>
-    <span class="username">{{ username }}</span>
 
 
+      <span class="user-head-image"> </span>
+      <span class="username">{{ username }}</span>
+
+    <span style="flex: 1"></span>
     <span class="logout" @click="logout">退出登录</span>
   </div>
 </template>
@@ -33,31 +35,40 @@
 
   .header {
 
+
     width: 100%;
     height: 60px;
+    display: flex;
+    align-items: center;
     background: rgba(69, 73, 77, 1);
 
-    .img-header {
-      display: inline-block;
-      width: 26px;
-      height: 25px;
-      background-color: white;
-      margin-top: 20px;
+
+    .user-head-image{
+
       margin-left: 32px;
+      /*font-size: 14px;*/
+      /*color: rgba(255, 255, 255, 1);*/
+      height: 30px;
+      width: 30px;
+
+      background: url("../../common/image/user-head-image.png") no-repeat;
     }
     .username {
+
       font-size: 14px;
       color: rgba(255, 255, 255, 1);
-      line-height: 20px;
-      margin-top: 20px;
+      width: 30px;
+      line-height: 60px;
+      /*background: url("../../common/image/user-head-image.png") no-repeat;*/
+      /*margin-top: 15px;*/
       margin-left: 12px;
     }
     .logout {
-      float: right;
+
       font-size: 14px;
       color: rgba(255, 255, 255, 1);
       line-height: 40px;
-      margin-top: 10px;
+    
       margin-right: 40px;
       cursor: pointer;
     }

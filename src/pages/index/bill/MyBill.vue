@@ -162,7 +162,7 @@
         margin: auto;
         width: 90px;
         height:90px;
-        background-color: darkgrey;
+        background: url("../../../common/image/bill-content-blank-img.png") no-repeat;
       }
 
       span {

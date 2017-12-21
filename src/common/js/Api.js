@@ -39,6 +39,17 @@ export default {
   get_bill_detail_url:host+'/rentBook/book/billsDetail.do',
 
 
+  //交易记录
+  get_all_record_url:host+'/rentBook/transact/transactInfo.do',
+  get_record_detail_url:host+'/rentBook/transact/transactDetail.do',
+
+
+  //我的账户
+  get_myaccount_detail_url:host+'/rentBook/transact/showAccount.do',
+  to_add_bankcard_url:host+'/rentBook/bank/addBank.do',
+  get_cash_out_url:host+'/rentBook/payment/userwithdraw.do',
+  to_delete_bankcard_url:host+'/rentBook/bank/delBank.do',
+
 
   //内置路由
   login_router: '/login',

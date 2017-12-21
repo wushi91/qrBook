@@ -187,6 +187,15 @@ export default {
 
           isPay:item.settle==='是',
           billId:item.id,
+
+          //
+          recordName:item.abstracts+"（"+item.address+"）",
+          recordTime:this.getFormateDate(item.trading_time),
+          recordMoney:item.balance,
+          recordStauts:item.status,
+          payId:item.pay_id,
+          recordType:item.abstracts,
+
         }
 
 

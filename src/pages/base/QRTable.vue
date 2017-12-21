@@ -86,7 +86,7 @@
         MyUtil.linkToPath(this, '/book/edit?houseId='+ houseId+'&province='+province+'&city='+city+'&address='+houseName )
       },
       deleteAccount: function (houseId,accountId) {
-        Request.requestDeleteAccount(this,houseId,accountId)
+        Request.requestDeleteBook(this,houseId,accountId)
       },
 
 

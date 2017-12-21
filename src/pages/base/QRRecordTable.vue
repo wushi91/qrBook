@@ -13,7 +13,7 @@
         <div class='table-house-use'>
 
           <span v-for="header in headerData" :style="{ 'width': header.width}">{{ item[header.prob] }}</span>
-          <span class="detail-action" @click="toRecordDetail">详情</span>
+          <span class="detail-action" @click="toRecordDetail(item.recordType,item.payId)">详情</span>
         </div>
       </div>
     </div>
@@ -35,9 +35,12 @@
       }
     },
     methods: {
-      toRecordDetail:function () {
-        console.log('sssssssssssssssssssssssssss')
-        MyUtil.linkToPath(this, '/record/detail')
+      toRecordDetail:function (recordType,payId) {
+
+//        item.recordType,item.payId
+        console.log('recordType = '+recordType)
+        console.log('payId = '+payId)
+        MyUtil.linkToPath(this, '/record/detail?recordType='+recordType+'&payId='+payId)
       }
     }
   }

@@ -29,7 +29,9 @@
 
       <el-input class='input-phonenum' v-model="register_phonenum" placeholder="请输入手机号码"></el-input>
       <el-input class='input-password' v-model="register_password" type="password" placeholder="请设置6-16位密码">
-        <i slot="suffix" class="el-input__icon el-icon-view"></i>
+        <template slot="append" >
+          <div @click="toGetRegisteCode">获取验证码</div>
+        </template>
       </el-input>
       <el-input class='input-code' v-model="register_code" placeholder="请输入6位验证码">
         <template slot="append" >

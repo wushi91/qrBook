@@ -11,15 +11,58 @@
 
 
     <!--添加银行卡的对话框-->
-    <div v-show="dialog_login_content" class="dialog_login_content dialog-content">
-      <span class="dialog-title">添加银行卡</span>
-      <el-input class='input-bank-username' v-model="addcard_bank_username" placeholder="请输入持卡人姓名"></el-input>
-      <el-input class='input-bank-name' v-model="addcard_bank_name" placeholder="请输入开户行"></el-input>
-      <el-input class='input-bank-cardnum' v-model="addcard_bank_cardnum" placeholder="请输入银行卡号"></el-input>
-      <button @click="userLogin" class="btn-bank-card">保存</button>
+    <div v-show="dialog_add_card_content" class="dialog_add_card_content dialog-content">
+    <span class="dialog-title">添加银行卡</span>
+    <el-input class='input-bank-username' v-model="addcard_bank_username" placeholder="请输入持卡人姓名"></el-input>
+    <el-input class='input-bank-name' v-model="addcard_bank_name" placeholder="请输入开户行"></el-input>
+    <el-input class='input-bank-cardnum' v-model="addcard_bank_cardnum" placeholder="请输入银行卡号"></el-input>
+    <button @click="userLogin" class="btn-bank-card">保存</button>
     </div>
 
 
+    <!--提现的对话框-->
+    <div v-show="dialog_get_cash_content" class="dialog_get_cash_content dialog-content">
+      <span class="dialog-title">提现</span>
+      <div class="get-cash-choose-card-wrapper">
+        <span>到账银行卡(免手续费)</span>
+        <span>招商银行(尾号1108)</span>
+        <div class="to-choose-bank-card" @click="toChooseBankCard"></div>
+      </div>
+
+      <el-input class='input-get-cash-count'
+                placeholder="请输入提现金额"
+                v-model='rentMoney'
+                :disabled="isTypeDetail">
+        <template class="input-append-behind" slot="append">
+          <div>元</div>
+        </template>
+      </el-input>
+      <span class='tip-money-total'>可提现金额50,000元</span>
+      <button @click="userLogin" class="btn-bank-card">申请提现</button>
+    </div>
+
+
+
+
+
+    <!--选择到账银行卡的对话框-->
+    <div v-show="dialog_choose_card_content" class="dialog_choose_card_content dialog-content">
+
+      <span style="position: absolute;width: 20px;display: inline-block;background-color: darkgrey;height: 20px;"></span>
+      <span class="dialog-title">选择到账银行卡</span>
+
+      <div style="background-color:rgba(227,228,230,1); height: 2px;margin-top: 20px"></div>
+      <div class="choose-card-item">
+        <span >招商银行(尾号3479)</span>
+        <el-checkbox  style='width:30px;height: 30px;float: right' v-model="checked"></el-checkbox>
+      </div>
+
+      <div class="choose-card-item">
+        <span >中国农业银行(尾号7492)</span>
+        <el-checkbox  style='width:30px;height: 30px;float: right' v-model="checked"></el-checkbox>
+      </div>
+
+    </div>
 
   </el-dialog>
 </template>
@@ -44,9 +87,11 @@
         register_code: "201126",
 
 
-        dialog_login_content: false,
-        dialog_register_content: true,
-        dialog_forget_content: false,
+        dialog_add_card_content: false,
+        dialog_get_cash_content: true,
+        dialog_choose_card_content: false,
+
+        checked:true,
       }
     },
 
@@ -57,40 +102,36 @@
       }
     },
     methods: {
+
+
       openDialog: function () {
-        this.dialog_forget_content = false
-        this.dialog_login_content = false
-        this.dialog_register_content = false
-        if (this.type === '注册') {
-          this.dialog_register_content = true
+        this.dialog_choose_card_content = false
+        this.dialog_add_card_content = false
+        this.dialog_get_cash_content = false
+        if (this.type === '提现') {
+          this.dialog_get_cash_content = true
         }
-        if (this.type === '登录') {
-          this.dialog_login_content = true
+        if (this.type === '添加银行卡') {
+          this.dialog_add_card_content = true
         }
       },
+
       closeDialog: function () {
         //子组件对openStatus修改后向父组件发送事件通知
         this.$emit('dialogData', false)
       },
 
-      userLogin: function () {
-//        MyUtil.linkToPath(this,'/home')
-        Request.requestToLogin(this, this.login_phonenum, this.login_password)
-      },
-      userRegister: function () {
-        //首先校验短信马
-        Request.requestCheckRegisterCode(this, this.register_phonenum, this.register_password, this.register_code)
-      },
 
-      toForget: function () {
-        this.dialog_forget_content = true
-        this.dialog_login_content = false
-        this.dialog_register_content = false
+
+      toChooseBankCard: function () {
+        this.dialog_choose_card_content = true
+        this.dialog_add_card_content = false
+        this.dialog_get_cash_content = false
       },
       toRegister: function () {
-        this.dialog_forget_content = false
-        this.dialog_login_content = false
-        this.dialog_register_content = true
+        this.dialog_choose_card_content = false
+        this.dialog_add_card_content = false
+        this.dialog_get_cash_content = true
       },
       toGetRegisteCode: function () {
         Request.requestGetRegisterCode(this, this.register_phonenum)
@@ -100,7 +141,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="less" >
+<style lang="less">
   @import "../../common/less/index.less";
 
   .my-login-dialog {
@@ -126,6 +167,36 @@
         line-height: 33px;
       }
 
+      .get-cash-choose-card-wrapper {
+        margin-top: 20px;
+        background: rgba(240, 241, 242, 1);
+        padding: 12px 10px 12px 20px;
+        position: relative;
+        span:first-child {
+          font-size: 14px;
+          color: rgba(177, 178, 179, 1);
+          line-height: 20px;
+          display: block;
+        }
+
+        span:nth-child(2) {
+          font-size: 20px;
+          color: rgba(51, 51, 51, 1);
+          line-height: 28px;
+          margin-top: 6px;
+        }
+
+        .to-choose-bank-card {
+          position: absolute;
+          right: 10px;
+          bottom: 12px;
+          width: 30px;
+          height: 30px;
+          background-color: gainsboro;
+        }
+
+      }
+
       .el-input {
         background: rgba(240, 241, 242, 1);
         input {
@@ -145,7 +216,7 @@
           margin-right: 17px;
           transform: scaleY(0.5);
 
-          &:hover{
+          &:hover {
             color: #323333;
           }
         }
@@ -164,35 +235,56 @@
         border: none;
       }
 
-
       .input-bank-username {
         margin-top: 20px;
       }
 
       .input-bank-name {
-         margin-top: 20px;
-       }
-
-      .input-bank-cardnum {
         margin-top: 20px;
+      }
+
+      .input-bank-cardnum, .input-get-cash-count {
+        margin-top: 20px;
+      }
+
+      .tip-money-total{
+        margin-left: 20px;
+        margin-top: 10px;
+        display: inline-block;
+        font-size:14px;
+        color:rgba(153,153,153,1);
+        line-height:20px;
+      }
+
+
+      .choose-card-item{
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
+        span{
+          font-size:20px;
+          color:rgba(51,51,51,1);
+          line-height:28px;
+        }
       }
 
       .input-code {
         margin-top: 30px;
-        .el-input-group__append{
+        .el-input-group__append {
           padding: 0;
           text-align: center;
           width: 170px;
           border: none;
           background: rgba(240, 241, 242, 1);
 
-          div{
+          div {
             cursor: pointer;
-            font-size:18px;
-            color:rgba(250,75,87,1);
-            line-height:25px;
+            font-size: 18px;
+            color: rgba(250, 75, 87, 1);
+            line-height: 25px;
 
-            border-left: 1px solid #CACBCC ;
+            border-left: 1px solid #CACBCC;
           }
         }
       }
@@ -209,5 +301,46 @@
 
     }
 
+
+    .dialog_choose_card_content{
+      padding-top: 24px;
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 30px;
+    }
   }
+</style>
+
+
+<style lang="less">
+
+
+  .el-input {
+
+    .el-input__inner {
+     padding-left: 20px;
+
+    }
+
+    .el-input-group__append {
+      padding: 0;
+      border: none;
+      text-align: center;
+      background: white;
+
+      background: rgba(240, 241, 242, 1);
+
+      div {
+
+        font-size:20px;
+        color:rgba(51,51,51,1);
+        line-height:28px;
+        margin-right: 20px;
+        cursor: pointer;
+
+      }
+    }
+
+  }
+
 </style>

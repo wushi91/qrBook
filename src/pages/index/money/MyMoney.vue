@@ -4,17 +4,17 @@
     <div class="balance-wrapper">
 
       <span>账户余额</span><br/>
-      <span class="balance">0</span><button>提现</button>
+      <span class="balance">{{ balance }}</span><button @click="toGetCash">提现</button>
     </div>
 
     <div class="bank-card-container">
       <span class="title">我的银行卡</span>
 
       <div class="bank-card-wrapper">
-        <div class="bank-card bank-card-thebank">
-          <span>招商银行</span>
-          <span>**** **** **** 3479</span>
-          <span>删除</span>
+        <div class="bank-card bank-card-thebank" v-for="item in bankCardList">
+          <span>{{ item.account}}</span>
+          <span>**** **** **** {{item.card_number}}</span>
+          <span @click="toDeleteBankCard(item.cardid)">删除</span>
         </div>
 
         <div class="bank-card bank-card-add" @click="toAddBankCard">
@@ -25,8 +25,9 @@
       </div>
     </div>
 
-    <money-dialog-component :showDialog="showDialog" :type="type"></money-dialog-component>
+    <!--<money-dialog-component :showDialog="showDialog" :type="type" @dialogData="dialogClose"></money-dialog-component>-->
 
+    <qr-dialog :showDialog="showDialog" :type="type" :outData="dataToDialog" @dialogData="dialogClose"></qr-dialog>
   </div>
 </template>
 
@@ -35,17 +36,23 @@
   import MyUtil from '@/common/js/MyUtil.js'
   import Request from '@/common/js/Request'
   import MoneyDialog from '@/pages/base/MoneyDialog'
+  import QRDialog from '@/pages/base/QRDialog'
 
   export default {
     name: 'MyMoney',
     data() {
       return {
         showDialog: false,
-        type: ''
+        type: '',
+        dataToDialog:{},
+
+        balance:0,
+        bankCardList:[]
       }
     },
     created: function () {
-
+      let userId = MyUtil.getUserId()
+      Request.requestMyaccountDeatil(this, userId)
     },
 
 
@@ -53,14 +60,33 @@
       fetchData: function () {
       },
 
+
+      dialogClose: function (data) {
+        this.showDialog = data//子组件触发父组件事件，进行数据变更，同步result数据
+      },
+
       toAddBankCard: function () {
-        this.type = '登录'
+        this.type = '添加银行卡'
         this.showDialog = true
       },
+
+      toGetCash:function () {
+        this.type = '提现'
+        this.showDialog = true
+        this.dataToDialog.bankCardList = this.bankCardList
+
+      },
+
+      toDeleteBankCard:function (cardId) {
+        this.type = '删除银行卡'
+        this.showDialog = true
+        this.dataToDialog.cardId = cardId
+      }
 
     },
     components: {
       'money-dialog-component':MoneyDialog,
+      'qr-dialog':QRDialog
     },
   }
 </script>
@@ -121,8 +147,12 @@
       }
 
       .bank-card-wrapper{
+
         margin-top: 20px;
         display: flex;
+        flex-wrap:  wrap;
+        max-width: 1000px;
+
 
         .bank-card{
           padding: 10px 12px;
@@ -133,6 +163,7 @@
           width: 150px;
           text-align: center;
           margin-left: 30px;
+          margin-bottom: 30px;
         }
 
         .bank-card-thebank{
@@ -154,6 +185,7 @@
           }
 
           span:nth-child(3){
+            cursor: pointer;
             text-align: right;
             font-size:14px;
           }

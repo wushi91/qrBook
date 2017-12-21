@@ -172,12 +172,12 @@ export default {
   },
 
   //删除账本
-  requestDeleteBook: function (context,houseId,BookId) {
+  requestDeleteBook: function (context,houseId,bookId) {
     let data = {
       params: {
         // user_id: userId,
         hid:houseId,
-        id:BookId,
+        id:bookId,
 
       }
     }
@@ -275,11 +275,11 @@ export default {
   },
 
   //删除租客
-  requestDeleteRender: function (context,BookId) {
+  requestDeleteRender: function (context,bookId) {
     let data = {
       params: {
         // user_id: userId,
-        id:BookId,
+        id:bookId,
       }
     }
 
@@ -378,7 +378,6 @@ export default {
       console.log(response.data)
 
       var list = response.data.list
-
       if (list.length === 0) {
         context.blank =true
       } else {
@@ -392,27 +391,128 @@ export default {
   },
 
   //所有记录详情
-  requestRecordDeatil:function (context, userId,recordId) {
+  requestRecordDeatil:function (context, userId,recordType,payId) {
 
     let data = {
-      // params: {
-      //   user_id: userId,
-      //   id: recordId,
-      // }
+      params: {
+        user_id: userId,
+        abstracts: recordType,//提现 or 收租 or交租
+        pay_id:payId
+      }
     }
 
     console.log('requestRecorddeatil')
     MyUtil.axioGet(Api.get_record_detail_url, data, function (response) {
 
-      console.log('记录详情')
+      console.log('所有记录详情')
       console.log(response.data)
       let record = response.data.list
 
+      // houseName: '',
+      //   :'',
+      //   rentMoneyTime:'',
+      //   currentStatus:"",
+      //   payTime:'',
+      //   payWay:'',
+
+
+      context.houseName= record.address
+
+      context.isTypeRent= record.abstracts==='提现'?false:false
+      context.rentMoney=record.balance
+      context.rentMoneyTime=MyUtil.getFormateDate(record.start_time)+' - '+MyUtil.getFormateDate(record.end_time),
+      context.currentStatus=record.status
+      context.payTime=MyUtil.getFormateDate(record.trading_time)
+      context.payWay=record.paytype?record.paytype:'微信支付'
+      context.orderNum=record.orderid
+      context.moneyToCash=record.balance
+
+      //   moneyToCash:''
+
     })
 
-  }
+  },
 
 
+  //账户详情 余额之类的
+  requestMyaccountDeatil: function (context, userId) {
+    let data = {
+      params: {
+        user_id: userId,
+      }
+    }
+    console.log('requestMyaccountDeatil')
+    MyUtil.axioGet(Api.get_myaccount_detail_url, data, function (response) {
+
+      console.log('账户详情')
+      console.log(response.data)
+      context.balance = response.data.list[0].money?response.data.list[0].money:0
+
+      // "cardid":1,    //银行卡编号
+      // "user_id":60,  //用户编号
+      // "cardholder":"张三",  //持卡人姓名
+      // "account":"中国建行", //开户行
+      // "card_number":"415556565" //银行卡号
+      context.bankCardList =  response.data.banklist
+
+
+      console.log(context.bankCardList)
+
+    })
+  },
+
+
+  //添加银行卡
+  requestAddBankCard: function (context, userId,addcard_bank_username,addcard_bank_name,addcard_bank_cardnum) {
+    let data = {
+      params: {
+        user_id: userId,
+        cardholder:addcard_bank_username,//持卡人
+        account:addcard_bank_name,//开户行
+        card_number:addcard_bank_cardnum//银行卡号
+      }
+    }
+    console.log('requestAddBankCard')
+    MyUtil.axioGet(Api.to_add_bankcard_url, data, function (response) {
+      MyUtil.toastSuccess(context, '添加成功', 2000)
+      context.innerShowDialog = false
+
+    })
+  },
+
+
+  //提现
+  requestGetCashOut: function (context, userId,cardId,moneyToCash) {
+    let data = {
+      params: {
+        user_id: userId,
+        cardid:cardId,
+        balance:moneyToCash,
+      }
+    }
+    console.log('requestGetCashOut')
+    MyUtil.axioGet(Api.get_cash_out_url, data, function (response) {
+      MyUtil.toastSuccess(context, '提现成功', 2000)
+      context.innerShowDialog = false
+
+    })
+  },
+
+
+  //删除银行卡
+  requestToDelteteBankCard: function (context, userId,cardId) {
+    let data = {
+      params: {
+        user_id: userId,
+        cardid:cardId,
+      }
+    }
+    console.log('requestToDelteteBankCard')
+    MyUtil.axioGet(Api.to_delete_bankcard_url, data, function (response) {
+      MyUtil.toastSuccess(context, '删除成功', 2000)
+      context.innerShowDialog = false
+    })
+  },
 }
 
 
