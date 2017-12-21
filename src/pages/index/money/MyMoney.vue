@@ -35,7 +35,7 @@
 
   import MyUtil from '@/common/js/MyUtil.js'
   import Request from '@/common/js/Request'
-  import MoneyDialog from '@/pages/base/MoneyDialog'
+//  import MoneyDialog from '@/pages/base/MoneyDialog'
   import QRDialog from '@/pages/base/QRDialog'
 
   export default {
@@ -71,7 +71,7 @@
       },
 
       toGetCash:function () {
-        this.type = '提现'
+        this.type = '登录'
         this.showDialog = true
         this.dataToDialog.bankCardList = this.bankCardList
 
@@ -85,7 +85,7 @@
 
     },
     components: {
-      'money-dialog-component':MoneyDialog,
+//      'money-dialog-component':MoneyDialog,
       'qr-dialog':QRDialog
     },
   }

@@ -67,7 +67,7 @@
     name: 'MyBill',
     data() {
       return {
-        blank: false,
+        blank: true,
         type:'',
         isTypeAll: false,
         isTypePay: false,

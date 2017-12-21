@@ -65,14 +65,15 @@
       <div class="content-wrapper choose-card-content-wrapper">
 
         <div v-for="item,index in outData.bankCardList">
-        <div class="choose-card-item" >
-          <span>{{ item.account}}(尾号{{ item.card_number}})</span>
-          <el-checkbox border size="medium" style='width:30px;height: 30px;float: right' v-model="checked"></el-checkbox>
+          <div class="choose-card-item">
+            <span>{{ item.account}}(尾号{{ item.card_number}})</span>
+            <el-checkbox border size="medium" style='width:30px;height: 30px;float: right'
+                         v-model="checked"></el-checkbox>
 
-        </div>
+          </div>
 
-        <div style="background-color:rgba(227,228,230,1); height: 1px;" v-show="index<outData.bankCardList.length-1">
-        </div>
+          <div style="background-color:rgba(227,228,230,1); height: 1px;" v-show="index<outData.bankCardList.length-1">
+          </div>
         </div>
 
       </div>
@@ -88,16 +89,72 @@
       <div style="background-color:rgba(227,228,230,1); height: 1px;"></div>
 
       <div class="btn-wrapper">
-
         <el-button-group>
           <el-button @click="confirmToDeleteBankCard">确认</el-button>
           <el-button @click="cancelToDeleteBankCard">取消</el-button>
         </el-button-group>
+      </div>
+    </div>
+
+
+    <!--登录的对话框-->
+    <div v-if='innerType ==="登录"' class="dialog-container">
+      <div class="title-wrapper">
+        <span>{{ innerType }}</span>
+        <div class="to-close-dialog" @click="toCloseDialog"></div>
+      </div>
+      <div class="content-wrapper ">
+        <el-input class='input-phonenum' v-model="login_phonenum" placeholder="请输入手机号码"></el-input>
+        <el-input class='input-password' v-model="login_password" :type="showPassword?'text':'password'"
+                  placeholder="请输入密码">
+
+          <template class="input-append-behind" slot="append">
+            <div v-if="!showPassword" @click='showPassword=!showPassword' class="to-see-password"></div>
+            <div v-else @click='showPassword=!showPassword' class="to-hide-password"></div>
+          </template>
+        </el-input>
+      </div>
+      <div class="btn-wrapper login-btn-wrapper">
+        <el-button @click="toLogin" type="primary">保存</el-button>
+      </div>
+
+      <div class="footer-wrapper">
+        <span @click="showForget">忘记密码</span>
+        <span @click='showRegister' style="float:right;">免费注册</span>
+      </div>
+    </div>
+
+
+    <!--注册的对话框-->
+    <div v-if='innerType ==="注册"' class="dialog-container">
+      <div class="title-wrapper">
+        <span>{{ innerType }}</span>
+        <div class="to-close-dialog" @click="toCloseDialog"></div>
+      </div>
+      <div class="content-wrapper">
+        <el-input class='input-phonenum' v-model="register_phonenum" placeholder="请输入手机号码"></el-input>
+        <el-input class='input-password' v-model="register_password" :type="showPassword?'text':'password'"
+                  placeholder="请设置6-16位密码">
+          <template class="input-append-behind" slot="append">
+            <div v-if="!showPassword" @click='showPassword=!showPassword' class="to-see-password"></div>
+            <div v-else @click='showPassword=!showPassword' class="to-hide-password"></div>
+          </template>
+        </el-input>
+        <el-input class='input-code' v-model="register_code" placeholder="请输入6位验证码">
+          <template slot="append">
+            <div v-if="canClickCode" @click="toGetRegisteCode">获取验证码</div>
+            <div v-else style="color:#FA4B57;">{{daojishi}}</div>
+          </template>
+        </el-input>
+
+      </div>
+      <div class="btn-wrapper register-btn-wrapper">
+        <el-button @click="toRegister" type="primary">注册并登录</el-button>
 
       </div>
 
-
     </div>
+
 
   </el-dialog>
 </template>
@@ -110,7 +167,7 @@
 
   export default {
     name: 'QRDialog',
-    props: ['showDialog', 'type','outData'],
+    props: ['showDialog', 'type', 'outData'],
     data() {
       return {
         innerShowDialog: this.showDialog,
@@ -123,8 +180,22 @@
 
 
         //提现
-        input_money_tocash:'',
-        checked:true,
+        input_money_tocash: '',
+        checked: true,
+
+        //登陆
+        login_phonenum: '13822542317',
+        login_password: '123456',
+
+        showPassword: false,
+
+        register_phonenum: '13410052773',
+        register_password: '123456',
+        register_code: "201126",
+        canClickCode:true,
+        seconds:10,
+        daoji_timer:10,
+        daojishi:''
       }
     },
 
@@ -133,7 +204,7 @@
       showDialog(val) {
         this.innerShowDialog = val
       },
-      type(val){
+      type(val) {
         this.innerType = val
       }
     },
@@ -148,27 +219,60 @@
 
       toCloseDialog: function () {
         console.log('toCloseDialog')
-        this.innerShowDialog= false
+        this.innerShowDialog = false
       },
-      toChooseBankCard:function(){
-        this.innerType='选择到账银行卡'
+      toChooseBankCard: function () {
+        this.innerType = '选择到账银行卡'
       },
-      toAddBankCard:function () {
+      toAddBankCard: function () {
         let userId = MyUtil.getUserId()
-        Request.requestAddBankCard(this,userId,this.addcard_bank_username,this.addcard_bank_name,this.addcard_bank_cardnum)
+        Request.requestAddBankCard(this, userId, this.addcard_bank_username, this.addcard_bank_name, this.addcard_bank_cardnum)
       },
-      toGetMoneyToCash:function () {
+      toGetMoneyToCash: function () {
         let userId = MyUtil.getUserId()
-        Request.requestGetCashOut(this,userId,this.outData.bankCardList[0].cardid,this.input_money_tocash)
+        Request.requestGetCashOut(this, userId, this.outData.bankCardList[0].cardid, this.input_money_tocash)
       },
 
-      confirmToDeleteBankCard:function () {
+      confirmToDeleteBankCard: function () {
         let userId = MyUtil.getUserId()
-        Request.requestToDelteteBankCard(this,userId,this.outData.cardId)
+        Request.requestToDelteteBankCard(this, userId, this.outData.cardId)
       },
-      cancelToDeleteBankCard:function () {
+      cancelToDeleteBankCard: function () {
         this.toCloseDialog()
       },
+
+
+      toLogin: function () {
+        Request.requestToLogin(this, this.login_phonenum, this.login_password)
+      },
+      showForget: function () {
+
+      },
+      showRegister: function () {
+        this.innerType ='注册'
+      },
+
+      toRegister:function () {
+        Request.requestGetRegisterCode(this, this.register_phonenum)
+      },
+      toGetRegisteCode:function () {
+        this.canClickCode = false
+        this.waitToGetRegisteCode()
+      },
+
+      waitToGetRegisteCode:function () {
+
+        this.daojishi= '重新发送('+this.daoji_timer+')'
+        if(this.daoji_timer>0){
+          this.daoji_timer--
+          setTimeout(this.waitToGetRegisteCode,1000)
+        }else{
+          this.canClickCode = true
+          this.daoji_timer= this.seconds
+        }
+      }
+
+
 
     },
   }
@@ -230,21 +334,20 @@
       margin-bottom: 20px;
     }
 
-    .el-button-group{
+    .el-button-group {
       width: 100%;
       .el-button {
         width: 50%;
         font-size: 20px;
-        color:rgba(51,51,51,1);
+        color: rgba(51, 51, 51, 1);
         margin-bottom: 0;
       }
     }
 
-
   }
 </style>
 
-<!---->
+<!--表格统一样式-->
 <style lang="less" scoped>
 
   .dialog-container {
@@ -263,7 +366,7 @@
         right: 22px;
         cursor: pointer;
         background: url("../../common/image/close-dialog-normal.png") no-repeat;
-        &:hover{
+        &:hover {
           background: url("../../common/image/close-dialog-hover.png") no-repeat;
         }
       }
@@ -275,6 +378,18 @@
 
     .btn-wrapper {
       text-align: center;
+    }
+
+    .footer-wrapper {
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-bottom: 20px;
+      span {
+        cursor: pointer;
+        font-size: 14px;
+        color: rgba(153, 153, 153, 1);
+        line-height: 20px;
+      }
     }
 
   }
@@ -313,7 +428,7 @@
         height: 30px;
 
         background: url("../../common/image/in-right-normal.png") no-repeat;
-        &:hover{
+        &:hover {
           background: url("../../common/image/in-right-hover.png") no-repeat;
         }
       }
@@ -339,25 +454,98 @@
 <!--选择银行卡-->
 <style lang="less" scoped>
 
-  .dialog-container{
-  .choose-card-content-wrapper{
-    padding-left:0;
-    padding-right: 0;
-    padding-bottom: 10px;
+  .dialog-container {
+    .choose-card-content-wrapper {
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 10px;
+    }
+
+    .choose-card-item {
+
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 30px;
+      padding-right: 30px;
+      span {
+        font-size: 20px;
+        color: rgba(51, 51, 51, 1);
+        line-height: 28px;
+      }
+    }
   }
 
-  .choose-card-item {
+</style>
 
 
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
-    span {
-      font-size: 20px;
-      color: rgba(51, 51, 51, 1);
-      line-height: 28px;
+<!--登陆-->
+
+<style lang="less">
+  .qr-dialog {
+
+    .el-input {
+      .to-see-password, .to-hide-password {
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+      }
+      .to-see-password {
+        background: url("../../common/image/see-password-normal.png") no-repeat;
+        &:hover {
+          background: url("../../common/image/see-passward-hover.png") no-repeat;
+        }
+      }
+      .to-hide-password {
+        background: url("../../common/image/hide-password-normal.png") no-repeat;
+        &:hover {
+          background: url("../../common/image/hide-password-hover.png") no-repeat;
+        }
+      }
     }
-  }}
+    .login-btn-wrapper {
+      padding-left: 20px;
+      padding-right: 20px;
+      .el-button {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+</style>
 
+
+<!--注册-->
+<style lang="less">
+  .qr-dialog {
+    .input-code {
+      .el-input-group__append {
+        padding: 0;
+        text-align: center;
+        width: 170px;
+
+        border: none;
+        background: rgba(240, 241, 242, 1);
+
+        div {
+          margin-right: 0;
+          cursor: pointer;
+          font-size: 18px;
+          color: rgba(250, 75, 87, 1);
+          line-height: 25px;
+          border-left: 1px solid #CACBCC;
+        }
+      }
+    }
+
+    .register-btn-wrapper {
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-bottom: 20px;
+      .el-button {
+        display: block;
+        width: 100%;
+        margin-bottom: 0;
+      }
+    }
+  }
 </style>

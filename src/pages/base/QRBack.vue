@@ -27,21 +27,30 @@
   @import "../../common/less/index.less";
 
   .qr-back {
+    width: 100px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
     span:first-child {
       display: inline-block;
-      width: 14px;
-      height: 14px;
-      background: rgba(51, 51, 51, 1);
+      width: 30px;
+      height: 30px;
+      background: url("../../common/image/btn-back-normal.png") no-repeat;
     }
 
     span:nth-child(2) {
-      height: 22px;
+
       font-size: 16px;
       color: rgba(51, 51, 51, 1);
-      line-height: 22px;
+      line-height: 30px;
     }
 
+
+    &:hover {
+      span:first-child {
+        background: url("../../common/image/btn-back-hover.png") no-repeat;
+      }
+    }
   }
 
 

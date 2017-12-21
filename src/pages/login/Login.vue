@@ -19,24 +19,31 @@
       <span class="company">© 2017庆仁科技(深圳)有限公司</span>
     </div>
 
-    <login-dialog-component :showDialog="showDialog" :type="type" @dialogData="dialogClose"></login-dialog-component>
+    <qr-dialog :showDialog="showDialog" :type="type" :outData="dataToDialog" @dialogData="dialogClose"></qr-dialog>
   </div>
 </template>
 
 <script>
 
 
-  import LoginDialog from '@/pages/base/LoginDialog'
+  //  import LoginDialog from '@/pages/base/LoginDialog'
+
+  import QRDialog from '@/pages/base/QRDialog'
 
   export default {
     name: 'login',
     data() {
       return {
         showDialog: false,
-        type: ''
+        type: '',
+        dataToDialog: {},
       }
     },
     methods: {
+
+      dialogClose: function (data) {
+        this.showDialog = data//子组件触发父组件事件，进行数据变更，同步result数据
+      },
 
       toLogin: function () {
         this.type = '登录'
@@ -47,13 +54,11 @@
         this.showDialog = true
       },
 
-      dialogClose: function (data) {
-        this.showDialog = data//子组件触发父组件事件，进行数据变更，同步result数据
-      }
+
 
     },
     components: {
-      'login-dialog-component': LoginDialog,
+      'qr-dialog': QRDialog
     },
   }
 </script>
