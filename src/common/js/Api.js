@@ -16,6 +16,7 @@ export default {
   to_login_url: host + '/rentBook/landlord/landlordLog.do',
   /*重置密码*/
   to_modify_password_url: host + '/rentBook/landlord/modifyPassword.do',
+  get_forget_code_url: host + '/rentBook/landlord/getResetCode.do',
   // 账本相关
   get_all_book_url: host + '/rentBook/book/AllUserBooks.do',
   get_unused_book_url: host + '/rentBook/house/findIdleHouse.do',

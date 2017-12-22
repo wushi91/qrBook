@@ -1,7 +1,7 @@
 <template>
   <div class="bill right-content-wrapper">
     <div class="bill-blank" v-show="blank">
-      <div class="bill-blank-image"></div><span>你还没有账本</span>
+      <div class="bill-blank-image"></div><span>你还没有账单</span>
     </div>
 
     <div class="bill-book" v-show="!blank">

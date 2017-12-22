@@ -18,8 +18,11 @@
     name: 'QRHeader',
     data() {
       return {
-        username: '13822542317(test)'
+        username: ''
       }
+    },
+    created:function () {
+      this.username = MyUtil.getPhoneNum()
     },
     methods: {
       logout: function () {
@@ -68,7 +71,7 @@
       font-size: 14px;
       color: rgba(255, 255, 255, 1);
       line-height: 40px;
-    
+
       margin-right: 40px;
       cursor: pointer;
     }

@@ -4,7 +4,10 @@
     <div class="balance-wrapper">
 
       <span>账户余额</span><br/>
-      <span class="balance">{{ balance }}</span><button @click="toGetCash">提现</button>
+      <span class="balance">{{ balance }}</span>
+
+      <el-button @click="toGetCash"  type="primary">提现</el-button>
+
     </div>
 
     <div class="bank-card-container">
@@ -51,13 +54,14 @@
       }
     },
     created: function () {
-      let userId = MyUtil.getUserId()
-      Request.requestMyaccountDeatil(this, userId)
+      this.fetchData()
     },
 
 
     methods: {
       fetchData: function () {
+        let userId = MyUtil.getUserId()
+        Request.requestMyaccountDeatil(this, userId)
       },
 
 
@@ -71,7 +75,13 @@
       },
 
       toGetCash:function () {
-        this.type = '登录'
+
+        if(this.bankCardList.length===0){
+          this.type = '请先添加银行卡'
+          this.showDialog = true
+          return
+        }
+        this.type = '提现'
         this.showDialog = true
         this.dataToDialog.bankCardList = this.bankCardList
 
@@ -123,13 +133,13 @@
         }
       }
 
-      button {
+      .el-button {
         margin-left: 30px;
         padding: 6px 31px;
-        background: rgba(46, 138, 230, 1);
+
         border-radius: 6px;
         font-size: 14px;
-        color: rgba(255, 255, 255, 1);
+
         line-height: 25px;
       }
     }

@@ -57,6 +57,25 @@ export default {
     return userId
   },
 
+
+  savePhoneNum:function (userPhone) {
+    localStorage.setItem("userPhone", userPhone);
+  },
+
+  getPhoneNum:function () {
+
+    //没有登录的情况下
+    if(!this.isUserLogin()){
+      return ''
+    }
+
+    if(localStorage.getItem("userPhone")){
+      return localStorage.getItem("userPhone")
+    }else{
+      return ''
+    }
+  },
+
   userLogout: function (context, toPath) {
     localStorage.removeItem("tokenId")
     sessionStorage.removeItem("tokenId")

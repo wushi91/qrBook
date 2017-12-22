@@ -9,7 +9,7 @@
 
     <div class="table-content">
 
-      <div class="table-row" v-for="item in tableData">
+      <div class="table-row" v-for="item,index in tableData">
         <div class='table-house-use' :class="{'table-house-overdate': isOutdate}" v-if="!item.isUnused||isOutdate">
           <!--有租客的房源-->
           <span v-for="header in headerData" :style="{ 'width': header.width}">{{ item[header.prob] }}</span>
@@ -24,7 +24,7 @@
             <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="toRenterDetail(item.accountId)">
               租客详情
             </el-button>
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="deleteAccount('',item.accountId)">
+            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="deleteAccount('',item.accountId,index)">
               删除账本
             </el-button>
 
@@ -45,7 +45,7 @@
             <el-button slot="reference" class="more-action">更多</el-button>
             <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="editAccount(item.houseId,item.province,item.city,item.houseName)">编辑账本
             </el-button>
-            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="deleteAccount(item.houseId,'')">
+            <el-button style="display: block;width: 150px;margin: 5px auto;font-size: 16px;" @click="deleteAccount(item.houseId,'',index)">
               删除账本
             </el-button>
 
@@ -71,7 +71,9 @@
     props:['headerData','tableData','isTypeAll','isTypeUnused','isOutdate'],
     data() {
       return {
-      }
+
+        deleteItemIndex:-1
+    }
     },
     methods: {
       addRenter: function (houseId,houseName) {
@@ -85,9 +87,17 @@
 
         MyUtil.linkToPath(this, '/book/edit?houseId='+ houseId+'&province='+province+'&city='+city+'&address='+houseName )
       },
-      deleteAccount: function (houseId,accountId) {
+      deleteAccount: function (houseId,accountId,deleteItemIndex) {
+
         Request.requestDeleteBook(this,houseId,accountId)
+
+        this.deleteItemIndex = deleteItemIndex
+
       },
+
+      refreshTableData:function () {
+        this.tableData.splice(this.deleteItemIndex,1)
+      }
 
 
 

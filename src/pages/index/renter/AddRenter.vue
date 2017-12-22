@@ -11,94 +11,126 @@
 
       <!--内容-->
       <span class="house-name" v-text="houseName">房源名称</span>
+
+      <div class="add-renter-content-item">
       <span>租客姓名</span>
       <el-input
         placeholder="请输入租客姓名"
         v-model='renterName'
         :disabled="isTypeDetail"></el-input>
-
-      <span>租客手机号</span>
-      <el-input
-        placeholder="请输入租客手机号"
-        v-model='renterPhone'
-        :disabled="isTypeDetail"></el-input>
-
-      <span>起租日期</span>
-      <el-date-picker
-        class='date-no-before-icon'
-        v-model='rentStartDate'
-        :disabled="isTypeDetail"
-        type="date"
-        placeholder="请选择起租日期"></el-date-picker>
-
-      <span>截止日期</span>
-      <el-date-picker
-        class='date-no-before-icon'
-        :disabled="isTypeDetail"
-        placeholder="请选择截止日期"
-        type="date"
-        v-model='rentOverDate'></el-date-picker>
+      </div>
 
 
-      <span>租期</span>
-      <el-input
-        placeholder=""
-        :disabled="isTypeDetail"
-        v-model='rentLength'>
-        <template slot="append">
-          <div>月</div>
-        </template>
-      </el-input>
+      <div class="add-renter-content-item">
+        <span>租客手机号</span>
+        <el-input
+          placeholder="请输入租客手机号"
+          v-model='renterPhone'
+          :disabled="isTypeDetail"></el-input>
+      </div>
 
-      <span>交租方式</span>
-      <el-input
-        placeholder="请选择交租方式"
-        :disabled="isTypeDetail"
-        v-model='rentPayWay'>
-        <template slot="append">
-          <div>月/付</div>
-        </template>
-      </el-input>
 
-      <span>交租日期</span>
-      <el-input placeholder="请选择交租日期"
-                :disabled="isTypeDetail"
-                v-model='rentPayDate'>
-        <template slot="append">
-          <div>号</div>
-        </template>
-      </el-input>
+      <div class="add-renter-content-item">
+        <span>起租日期</span>
+        <el-date-picker
+          class='date-no-before-icon'
+          v-model='rentStartDate'
+          :disabled="isTypeDetail"
+          type="date"
+          placeholder="请选择起租日期"></el-date-picker>
 
-      <span>押金</span>
-      <el-input placeholder="请输入押金金额"
-                :disabled="isTypeDetail"
-                v-model='yaJinMoney'>
-        <template slot="append">
-          <div>元</div>
-        </template>
-      </el-input>
-      <span>每月租金</span>
-      <el-input placeholder="请输入租金金额"
-                v-model='rentMoney'
-                :disabled="isTypeDetail">
-        <template slot="append">
-          <div>元</div>
-        </template>
-      </el-input>
+      </div>
 
+
+      <div class="add-renter-content-item">
+        <span>截止日期</span>
+        <el-date-picker
+          class='date-no-before-icon'
+          :disabled="isTypeDetail"
+          placeholder="请选择截止日期"
+          type="date"
+          v-model='rentOverDate'></el-date-picker>
+
+      </div>
+
+
+      <div class="add-renter-content-item">
+        <span>租期</span>
+        <el-input
+          placeholder=""
+          :disabled="isTypeDetail"
+          v-model='rentLength'>
+          <template slot="append">
+            <div>月</div>
+          </template>
+        </el-input>
+      </div>
+
+
+      <div class="add-renter-content-item">
+        <span>交租方式</span>
+        <el-input
+          placeholder="请选择交租方式"
+          :disabled="isTypeDetail"
+          v-model='rentPayWay'>
+          <template slot="append">
+            <div>月/付</div>
+          </template>
+        </el-input>
+
+      </div>
+
+      <div class="add-renter-content-item">
+        <span>交租日期</span>
+        <el-input placeholder="请选择交租日期"
+                  :disabled="isTypeDetail"
+                  v-model='rentPayDate'>
+          <template slot="append">
+            <div>号</div>
+          </template>
+        </el-input>
+      </div>
+
+
+      <div class="add-renter-content-item">
+        <span>押金</span>
+        <el-input placeholder="请输入押金金额"
+                  :disabled="isTypeDetail"
+                  v-model='yaJinMoney'>
+          <template slot="append">
+            <div>元</div>
+          </template>
+        </el-input>
+      </div>
+
+
+      <div class="add-renter-content-item">
+        <span>每月租金</span>
+        <el-input placeholder="请输入租金金额"
+                  v-model='rentMoney'
+                  :disabled="isTypeDetail">
+          <template slot="append">
+            <div>元</div>
+          </template>
+        </el-input>
+
+      </div>
 
       <div class="btn-wrapper">
         <div v-show="isTypeDetail">
-          <button @click="toPageEditRenter">编辑租客信息</button>
-          <button @click="toDeleteRenter">租客退房</button>
+
+          <el-button  type="primary" @click="toPageEditRenter">编辑</el-button>
+          <el-button  type="primary" @click="toDeleteRenter">租客退房</el-button>
+
         </div>
 
         <div @click="addRenter" v-show="isTypeAdd">
-          <button>保存</button>
+          <el-button type="primary">保存</el-button>
         </div>
 
-        <div v-show="isTypeEdit">
-          <button @click="editRenter" >保存修改</button>
+        <div @click="editRenter" v-show="isTypeEdit">
+          <el-button type="primary">保存修改</el-button>
+
         </div>
       </div>
 
@@ -238,10 +270,24 @@
     background: white;
     .render-detail-content {
       margin-left: 150px;
+
       span {
         display: block;
-        margin-top: 20px;
         font-size: 14px;
+      }
+
+
+      .add-renter-content-item{
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        span {
+          font-size:14px;
+          color:rgba(51,51,51,1);
+
+          width: 90px;
+          display: inline-block;
+        }
       }
 
       .title {
@@ -252,31 +298,35 @@
       }
 
       span.house-name {
+        margin-top: 20px;
         font-size: 30px;
         color: rgba(51, 51, 51, 1);
         line-height: 42px;
       }
 
-      span.house-name + span {
-        margin-top: 10px;
-      }
+
 
       .btn-wrapper {
         width: 500px;
-        min-width: 200px;
         margin-top: 30px;
+        text-align: left;
+
+        margin-left: 90px;
+        min-width: 200px;
+
         padding-bottom: 60px;
       }
-      button {
-        display: inline-block;
+
+
+      .el-button {
         margin: auto;
         padding: 8px 38px 8px 38px;
-        background: rgba(46, 138, 230, 1);
         border-radius: 6px;
         font-size: 18px;
-        color: rgba(255, 255, 255, 1);
         line-height: 25px;
       }
+
+
 
     }
   }
@@ -287,17 +337,40 @@
 
   @import "../../../common/less/index.less";
 
-  .just-view {
-    .el-input.is-disabled {
-      .el-input__inner {
-        cursor: default;
-        color: #333333;
-        background-color: white;
+  .render-detail {
+    .render-detail-content.just-view {
+
+      .add-renter-content-item {
+
+        span {
+          font-size: 14px;
+          color: rgba(153, 153, 153, 1);
+          line-height: 20px;
+        }
+      }
+
+      .el-input.is-disabled {
+        border: none;
+        font-size: 18px;
+
+        color: rgba(51, 51, 51, 1);
+        line-height: 25px;
+        .el-input__inner {
+          display: inline;
+          cursor: default;
+          font-size: 18px;
+
+          color: rgba(51, 51, 51, 1);
+          line-height: 25px;
+          background-color: white;
+
+        }
+
       }
 
     }
-  }
 
+  }
   .render-detail-content {
 
     .date-no-before-icon {
@@ -308,7 +381,6 @@
 
     .el-input {
       width: 200px;
-      margin-top: 10px;
       border: 1px solid #999999;
 
       .el-input__inner {

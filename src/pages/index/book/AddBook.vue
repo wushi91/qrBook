@@ -6,14 +6,17 @@
     <div class="add-book-content">
       <span class="title" v-show="isTypeAdd">新建账本</span>
       <span class="title" v-show="isTypeEdit">编辑账本</span>
+      <div class="add-book-content-item">
       <span class="city">房源所在城市</span>
-      <input class="form-text" value="广东 深圳" disabled placeholder="请选择房源所在的城市"/>
+      <input value="广东 深圳" disabled placeholder="请选择房源所在的城市"/>
+      </div>
+      <div class="add-book-content-item">
       <span class="detail-address">房源详细地址</span>
-      <textarea rows='3' class="form-text" v-model="address" placeholder="请填写详细的房源地址、房号等信息"></textarea>
-
+      <textarea rows='3' v-model="address" placeholder="请填写详细的房源地址、房号等信息"></textarea>
+      </div>
       <div class="btn-wrapper" >
-        <button v-show="isTypeAdd" @click="toSaveBook">保存</button>
-        <button v-show="isTypeEdit" @click="toEditBook" >保存修改</button>
+        <el-button v-show="isTypeAdd" type="primary" @click="toSaveBook" :disabled='!(province&&city&&address)'>保存</el-button>
+        <el-button v-show="isTypeEdit" type="primary" @click="toEditBook" :disabled="!(province&&city&&address)">保存修改</el-button>
       </div>
     </div>
 
@@ -34,7 +37,7 @@
         houseId:'',
         province: '广东',
         city: '深圳',
-        address: "B1",
+        address: "",
 
         isTypeAdd: true,
         isTypeEdit: false,
@@ -106,6 +109,18 @@
         display: block;
       }
 
+      .add-book-content-item{
+        margin-top: 20px;
+        display: flex;
+        span {
+          font-size:14px;
+          color:rgba(51,51,51,1);
+          margin-top: 10px;
+          margin-right: 20px;
+          display: inline-block;
+        }
+      }
+
       .title {
         font-size: 24px;
         color: rgba(51, 51, 51, 1);
@@ -117,37 +132,38 @@
         font-size: 14px;
         color: rgba(51, 51, 51, 1);
         line-height: 20px;
-        margin-top: 20px;
+
       }
 
       input {
-        margin-top: 10px;
-        width: 320px;
 
+        width: 320px;
+        padding:9px 12px;
+        font-size: 16px;
+        line-height: 16px;
       }
 
       textarea {
-        margin-top: 10px;
+
         width: 320px;
         line-height: 25px;
-
+        padding:9px 12px;
+        font-size: 16px;
       }
 
       .btn-wrapper {
         width: 320px;
         margin-top: 30px;
+        margin-left: 104px;
+        text-align: center;
       }
 
-      button {
+      .el-button {
         margin: auto;
-        padding: 8px 38px 8px 38px;
-        background: rgba(46, 138, 230, 1);
-        border-radius: 6px;
-        display: block;
-        font-size: 18px;
+        width: 148px;
+        font-size: 20px;
         color: rgba(255, 255, 255, 1);
-        line-height: 25px;
-        margin-bottom: 60px;
+        margin-bottom: 20px;
       }
 
     }

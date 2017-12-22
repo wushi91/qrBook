@@ -4,14 +4,13 @@ import Mock from '@/common/js/MockData.js'
 import axios from 'axios'
 
 
-var that = this;
+let that = this;
 
-export default {
+let Request = {
 
   init: function (context) {
   },
-
-  //请求验证码
+  //请求注册验证码
   requestGetRegisterCode: function (context, phoneNumber) {
     var data = {
       params: {
@@ -20,6 +19,8 @@ export default {
     }
     MyUtil.axioGet(Api.get_register_code_url, data, function (response) {
       console.log(response)
+    },function (response) {
+      context.register_code_tip = response.data.msg
     })
   },
 
@@ -34,9 +35,65 @@ export default {
 
     MyUtil.axioGet(Api.check_register_code_url, data, function (response) {
       //校验验证码成功后注册
-      that.a.requestToRigister(context, phoneNumber, password)
+      context.toRegister()
+    },function (response) {
+      context.register_code_tip = response.data.msg
     })
   },
+
+
+  requestGetForgetCode: function (context, phoneNumber) {
+    var data = {
+      params: {
+        phoneNumber: phoneNumber,
+      }
+    }
+    MyUtil.axioGet(Api.get_forget_code_url, data, function (response) {
+      console.log(response)
+    })
+  },
+
+  //重置密码的时候校验手机号
+  requestCheckForgetPhone: function (context, phoneNumber, code) {
+    var data = {
+      params: {
+        phoneNumber: phoneNumber,
+        inputverificationCode: code,
+      }
+    }
+
+    console.log('requestCheckForgetPhone')
+    MyUtil.axioGet(Api.check_register_code_url, data, function (response) {
+
+      console.log(response)
+      context.hasCheckedCode = true
+    },function (response) {
+      context.forget_code_tip = response.data.msg
+    })
+  },
+
+
+  //重置密码并登录17704044644-18221157142
+  requestChangePasswordAndLogin: function (context, phoneNumber, password) {
+    var data = {
+      params: {
+        phoneNumber: phoneNumber,
+        password: password,
+      }
+    }
+
+    console.log('requestChangePasswordAndLogin')
+    MyUtil.axioGet(Api.to_modify_password_url, data, function (response) {
+
+      console.log(response)
+      let tokenId = response.data.user_id
+      let userPhone = response.data.userPhone
+      MyUtil.savePhoneNum(userPhone)
+      MyUtil.saveUserLogin(tokenId)
+      MyUtil.linkToPath(context, '/')
+    })
+  },
+
 
   //校验验证码成功后注册
   requestToRigister: function (context, phoneNumber, password) {
@@ -47,10 +104,17 @@ export default {
       }
     }
 
+    console.log('注册')
     MyUtil.axioGet(Api.to_register_url, data, function (response) {
-      var tokenId = response.data.user_id
+
+      console.log(response.data)
+      let tokenId = response.data.user_id
+      let userPhone = response.data.userPhone
+      MyUtil.savePhoneNum(userPhone)
       MyUtil.saveUserLogin(tokenId)
       MyUtil.linkToPath(context, '/')
+    },function (response) {
+      context.register_code_tip = response.data.msg
     })
   },
 
@@ -63,9 +127,15 @@ export default {
       }
     }
     MyUtil.axioGet(Api.to_login_url, data, function (response) {
-      var tokenId = response.data.user_id
+      let tokenId = response.data.user_id
+      let userPhone = response.data.userPhone
+      MyUtil.savePhoneNum(userPhone)
       MyUtil.saveUserLogin(tokenId)
       MyUtil.linkToPath(context, '/')
+    },function (response) {
+      // context.login_phonenum_tip='账户或密码不正确'
+      context.login_password_tip='账户或密码不正确'
+
     })
   },
 
@@ -163,11 +233,13 @@ export default {
       }
     }
     console.log('requestEditBook')
-    MyUtil.axioGet(Api.to_edit_Book_url, data, function (response) {
+    MyUtil.axioGet(Api.to_edit_book_url, data, function (response) {
       MyUtil.toastSuccess(context, '保存成功，即将返回', 800)
       MyUtil.laterTodo(function () {
         MyUtil.goPageBack(context)
       }, 1000)
+    },function (response) {
+      console.log(response)
     })
   },
 
@@ -182,19 +254,19 @@ export default {
       }
     }
 
-    console.log(BookId)
+    console.log(bookId)
     console.log('requestDeleteBook')
-    MyUtil.axioGet(Api.to_delete_Book_url, data, function (response) {
+    MyUtil.axioGet(Api.to_delete_book_url, data, function (response) {
       MyUtil.toastSuccess(context, '删除成功', 800)
-
+      context.refreshTableData()
     })
   },
 
   //房客详情
-  requestRenterDeatil: function (context, BookId) {
+  requestRenterDeatil: function (context, bookId) {
     let data = {
       params: {
-        id: BookId,
+        id: bookId,
       }
     }
     console.log('requestRenterDeatil')
@@ -421,7 +493,7 @@ export default {
       context.isTypeRent= record.abstracts==='提现'?false:false
       context.rentMoney=record.balance
       context.rentMoneyTime=MyUtil.getFormateDate(record.start_time)+' - '+MyUtil.getFormateDate(record.end_time),
-      context.currentStatus=record.status
+        context.currentStatus=record.status
       context.payTime=MyUtil.getFormateDate(record.trading_time)
       context.payWay=record.paytype?record.paytype:'微信支付'
       context.orderNum=record.orderid
@@ -476,7 +548,7 @@ export default {
     MyUtil.axioGet(Api.to_add_bankcard_url, data, function (response) {
       MyUtil.toastSuccess(context, '添加成功', 2000)
       context.innerShowDialog = false
-
+      console.log(context.$parent.fetchData())//添加银行卡后刷新数据
     })
   },
 
@@ -494,7 +566,7 @@ export default {
     MyUtil.axioGet(Api.get_cash_out_url, data, function (response) {
       MyUtil.toastSuccess(context, '提现成功', 2000)
       context.innerShowDialog = false
-
+      context.$parent.fetchData()
     })
   },
 
@@ -511,9 +583,12 @@ export default {
     MyUtil.axioGet(Api.to_delete_bankcard_url, data, function (response) {
       MyUtil.toastSuccess(context, '删除成功', 2000)
       context.innerShowDialog = false
+      context.$parent.fetchData()//删除银行卡后刷新数据
     })
   },
 }
+
+export default Request
 
 
 // requestBookList: function (context, type, pageNum, pageSize) {
