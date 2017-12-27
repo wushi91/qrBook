@@ -10,9 +10,16 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {//配置请求代理
+      '/rentBook': {
+        target: 'http://192.168.2.220:8080',
+        changeOrigin: true,
 
-    // Various Dev Server settings
+      },
+    },
+
+
+      // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,

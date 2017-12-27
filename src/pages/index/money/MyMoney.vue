@@ -84,7 +84,7 @@
         this.type = '提现'
         this.showDialog = true
         this.dataToDialog.bankCardList = this.bankCardList
-
+        this.dataToDialog.balance = this.balance
       },
 
       toDeleteBankCard:function (cardId) {

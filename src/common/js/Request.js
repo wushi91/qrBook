@@ -549,6 +549,8 @@ let Request = {
       MyUtil.toastSuccess(context, '添加成功', 2000)
       context.innerShowDialog = false
       console.log(context.$parent.fetchData())//添加银行卡后刷新数据
+    },function (response) {
+      MyUtil.toastError(context,"添加失败："+response.data.msg)
     })
   },
 
@@ -567,6 +569,9 @@ let Request = {
       MyUtil.toastSuccess(context, '提现成功', 2000)
       context.innerShowDialog = false
       context.$parent.fetchData()
+    },function (response) {
+
+      MyUtil.toastError(context,"提现失败："+response.data.msg)
     })
   },
 

@@ -17,15 +17,15 @@
         <div class="to-close-dialog" @click="toCloseDialog"></div>
       </div>
       <div class="content-wrapper">
-        <el-input class='input-bank-username' v-model="addcard_bank_username" placeholder="请输入持卡人姓名"></el-input>
+        <el-input class='input-bank-username' :maxlength="7" v-model="addcard_bank_username" placeholder="请输入持卡人姓名"></el-input>
         <span class="error-input-tip"></span>
-        <el-input class='input-bank-name' v-model="addcard_bank_name" placeholder="请输入开户行"></el-input>
+        <el-input class='input-bank-name' :maxlength="10" v-model="addcard_bank_name" placeholder="请输入开户行"></el-input>
         <span class="error-input-tip"></span>
-        <el-input class='input-bank-cardnum' v-model="addcard_bank_cardnum" placeholder="请输入银行卡号"></el-input>
+        <el-input class='input-bank-cardnum' :maxlength="20" v-model="addcard_bank_cardnum" placeholder="请输入银行卡号"></el-input>
         <span class="error-input-tip"></span>
       </div>
       <div class="btn-wrapper">
-        <el-button type="primary" @click="toAddBankCard">保存</el-button>
+        <el-button type="primary" @click="toAddBankCard" :disabled="!(addcard_bank_username&&addcard_bank_name&&addcard_bank_cardnum)">保存</el-button>
       </div>
     </div>
 
@@ -43,15 +43,15 @@
           <div class="to-choose-bank-card" @click="toChooseBankCard"></div>
         </div>
 
-        <el-input class="input-money-tocash" placeholder="请输入提现金额" v-model='input_money_tocash'>
+        <el-input class="input-money-tocash" :maxlength="7"  placeholder="请输入提现金额" v-model='input_money_tocash'>
           <template class="input-append-behind" slot="append">
             <div>元</div>
           </template>
         </el-input>
-        <span class='tip-money-total'>可提现金额50,000元</span>
+        <span class='tip-money-total'>可提现金额 {{outData.balance}} 元</span>
       </div>
       <div class="btn-wrapper">
-        <el-button type="primary" @click="toGetMoneyToCash">申请提现</el-button>
+        <el-button type="primary" @click="toGetMoneyToCash" :disabled="!input_money_tocash||isNaN(input_money_tocash)">申请提现</el-button>
       </div>
     </div>
 
@@ -168,7 +168,7 @@
         </el-input>
         <span class="error-input-tip">{{ register_password_tip }}</span>
 
-        <el-input class='input-code' v-model="register_code" placeholder="请输入6位验证码">
+        <el-input class='input-register-code' v-model="register_code" placeholder="请输入6位验证码">
           <template slot="append">
             <div v-if="canClickCode" @click="toGetRegisteCode">获取验证码</div>
             <div v-else style="color:#FA4B57;">{{daojishi}}</div>
@@ -255,15 +255,15 @@
 
         //登陆
         login_phonenum: '13822542317',
-        login_password: '123456',
+        login_password: '',
         login_phonenum_tip: '',
         login_password_tip: '',
         showPassword: false,
 
         //注册
         register_phonenum: '13822542317',
-        register_password: '13822542317',
-        register_code: "13822542317",
+        register_password: '',
+        register_code: "",
         register_phonenum_tip: '',
         register_password_tip: '',
         register_code_tip: "",
@@ -515,6 +515,8 @@
     .el-input {
       background: @greyBg;
       border-radius: 5px;
+      display: flex;
+      align-items: center;
       /*margin-bottom: 20px;*/
       .el-input__inner {
         /*padding-left: 0;*/
@@ -528,7 +530,7 @@
       }
 
       .el-input-group__append {
-        padding: 0;
+
         text-align: center;
         border: none;
         background: @greyBg;
@@ -536,10 +538,25 @@
         color: rgba(51, 51, 51, 1);
         line-height: 28px;
 
+        padding-left: 20px;
+        padding-right: 20px;
         div {
-          margin-right: 20px;
+
         }
+
+
+        /*&:after{*/
+          /*content:'';*/
+          /*display: block;*/
+          /*font-size: 0;*/
+          /*background-color: red;*/
+          /*height:0px;*/
+          /*overflow:hidden;*/
+        /*}*/
+
       }
+
+
 
     }
 
@@ -561,10 +578,13 @@
     }
 
     .error-input-tip {
+      text-align: left;
+      height: 20px;
+      display: block;
       padding-left: 20px;
       font-size: 12px;
       color: rgba(250, 75, 87, 1);
-      line-height: 17px;
+      line-height: 20px;
     }
 
   }
@@ -607,6 +627,7 @@
       padding-left: 20px;
       padding-right: 20px;
       padding-bottom: 20px;
+      text-align: left;
       span {
         cursor: pointer;
         font-size: 14px;
@@ -726,6 +747,7 @@
 
     .el-input {
       .to-see-password, .to-hide-password {
+        display: block;
         cursor: pointer;
         width: 30px;
         height: 30px;
@@ -758,16 +780,33 @@
 <!--注册-->
 <style lang="less">
   .qr-dialog {
-    .input-code {
+    .input-password{
       .el-input-group__append {
         padding: 0;
         text-align: center;
-        width: 170px;
-
         border: none;
         background: rgba(240, 241, 242, 1);
+        width: 50px;
+        display: flex !important;
+        div{
 
+
+        }
+
+      }
+    }
+    .input-register-code {
+      .el-input-group__append {
+        padding: 0;
+        text-align: center;
+        border: none;
+        background: rgba(240, 241, 242, 1);
+        width: 171px;
+        display: flex !important;
+        margin-right: 20px;
         div {
+          padding-left: 20px;
+
           margin-right: 0;
           cursor: pointer;
           font-size: 18px;

@@ -8,7 +8,7 @@
       <span class="title" v-show="isTypeEdit">编辑账本</span>
       <div class="add-book-content-item">
       <span class="city">房源所在城市</span>
-      <input value="广东 深圳" disabled placeholder="请选择房源所在的城市"/>
+      <input value="广东省 深圳市" disabled placeholder="请选择房源所在的城市"/>
       </div>
       <div class="add-book-content-item">
       <span class="detail-address">房源详细地址</span>
@@ -35,8 +35,8 @@
       return {
 
         houseId:'',
-        province: '广东',
-        city: '深圳',
+        province: "广东省",
+        city: '深圳市',
         address: "",
 
         isTypeAdd: true,

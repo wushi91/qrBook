@@ -11,6 +11,7 @@ export default {
         if (codeOther) {
           codeOther(response)
         } else {
+
           console.log('接口出错执行')
           console.log(response.data.msg)
         }
@@ -58,20 +59,20 @@ export default {
   },
 
 
-  savePhoneNum:function (userPhone) {
+  savePhoneNum: function (userPhone) {
     localStorage.setItem("userPhone", userPhone);
   },
 
-  getPhoneNum:function () {
+  getPhoneNum: function () {
 
     //没有登录的情况下
-    if(!this.isUserLogin()){
+    if (!this.isUserLogin()) {
       return ''
     }
 
-    if(localStorage.getItem("userPhone")){
+    if (localStorage.getItem("userPhone")) {
       return localStorage.getItem("userPhone")
-    }else{
+    } else {
       return ''
     }
   },
@@ -110,6 +111,33 @@ export default {
     setTimeout(function () {
       todo()
     }, millions)
+  },
+
+  getNextMonth: function (date,length) {
+    let yy = date.getFullYear()
+    let mm = date.getMonth()
+    let dd = date.getDate()
+
+    let nm= 0//目标月份
+    nm = mm+length
+    let nd = 0//目标天数
+    if(this.monthDay(yy,nm+1)<dd){
+      nd = this.monthDay(yy,nm+1)
+    }else{
+      nd = dd-1
+    }
+
+    date.setDate(1)
+    date.setMonth(nm)
+    date.setDate(nd)
+    return date
+  },
+
+  monthDay: function (year, month) {
+    month = parseInt(month, 10);
+    var d = new Date(year, month, 0);  //这个是都可以兼容的
+    var date = new Date(year + "/" + month + "/0")   //IE浏览器可以获取天数，谷歌浏览器会返回NaN
+    return d.getDate();
   },
 
   getHeaderData: function (type) {
@@ -172,18 +200,18 @@ export default {
     //闲置账本unusedAccountHeaderData
     //逾期账本outDateHeaderData
 
-    let tableData =[]
-    for(let i=0;i<list.length;i++) {
+    let tableData = []
+    for (let i = 0; i < list.length; i++) {
       let item = list[i]
       let newItem =
         {
-          accountId:item.id,
+          accountId: item.id,
 
           //房源
           houseId: item.hid,
           houseName: item.address,
-          province:item.province,
-          city:item.city,
+          province: item.province,
+          city: item.city,
 
 
           //租客
@@ -198,22 +226,22 @@ export default {
           rentMoney: item.rent,
 
           //逾期
-          outdateLength:item.overdueNum,
-          outdateMoney:item.rent,
+          outdateLength: item.overdueNum,
+          outdateMoney: item.rent,
 
           //自定义字段
-          rentStartToOver:this.getFormateDate(item.start_time)+' - '+this.getFormateDate(item.end_time),
+          rentStartToOver: this.getFormateDate(item.start_time) + ' - ' + this.getFormateDate(item.end_time),
 
-          isPay:item.settle==='是',
-          billId:item.id,
+          isPay: item.settle === '是',
+          billId: item.id,
 
           //
-          recordName:item.abstracts+"（"+item.address+"）",
-          recordTime:this.getFormateDate(item.trading_time),
-          recordMoney:item.balance,
-          recordStauts:item.status,
-          payId:item.pay_id,
-          recordType:item.abstracts,
+          recordName: item.abstracts + "（" + item.address + "）",
+          recordTime: this.getFormateDate(item.trading_time),
+          recordMoney: item.balance,
+          recordStauts: item.status,
+          payId: item.pay_id,
+          recordType: item.abstracts,
 
         }
 
@@ -240,13 +268,12 @@ export default {
     return tableData
   },
 
-  getFormateDate:function (time) {
+  getFormateDate: function (time) {
     let date = new Date(time)
     return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
   }
 
 }
-
 
 
 //

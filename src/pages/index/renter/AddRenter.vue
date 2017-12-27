@@ -16,6 +16,7 @@
       <span>租客姓名</span>
       <el-input
         placeholder="请输入租客姓名"
+        :maxlength="7"
         v-model='renterName'
         :disabled="isTypeDetail"></el-input>
       </div>
@@ -24,6 +25,7 @@
       <div class="add-renter-content-item">
         <span>租客手机号</span>
         <el-input
+          :maxlength="11"
           placeholder="请输入租客手机号"
           v-model='renterPhone'
           :disabled="isTypeDetail"></el-input>
@@ -42,10 +44,11 @@
       </div>
 
 
-      <div class="add-renter-content-item">
+      <div class="add-renter-content-item" v-show ="isTypeDetail">
         <span>截止日期</span>
         <el-date-picker
           class='date-no-before-icon'
+
           :disabled="isTypeDetail"
           placeholder="请选择截止日期"
           type="date"
@@ -57,6 +60,7 @@
       <div class="add-renter-content-item">
         <span>租期</span>
         <el-input
+          :maxlength="2"
           placeholder=""
           :disabled="isTypeDetail"
           v-model='rentLength'>
@@ -70,6 +74,7 @@
       <div class="add-renter-content-item">
         <span>交租方式</span>
         <el-input
+          :maxlength="2"
           placeholder="请选择交租方式"
           :disabled="isTypeDetail"
           v-model='rentPayWay'>
@@ -82,7 +87,9 @@
 
       <div class="add-renter-content-item">
         <span>交租日期</span>
-        <el-input placeholder="请选择交租日期"
+        <el-input
+          :maxlength="2"
+          placeholder="请选择交租日期"
                   :disabled="isTypeDetail"
                   v-model='rentPayDate'>
           <template slot="append">
@@ -94,7 +101,9 @@
 
       <div class="add-renter-content-item">
         <span>押金</span>
-        <el-input placeholder="请输入押金金额"
+        <el-input
+          :maxlength="7"
+          placeholder="请输入押金金额"
                   :disabled="isTypeDetail"
                   v-model='yaJinMoney'>
           <template slot="append">
@@ -106,7 +115,9 @@
 
       <div class="add-renter-content-item">
         <span>每月租金</span>
-        <el-input placeholder="请输入租金金额"
+        <el-input
+          :maxlength="7"
+          placeholder="请输入租金金额"
                   v-model='rentMoney'
                   :disabled="isTypeDetail">
           <template slot="append">
@@ -125,11 +136,11 @@
         </div>
 
         <div @click="addRenter" v-show="isTypeAdd">
-          <el-button type="primary">保存</el-button>
+          <el-button type="primary" :disabled="!(rentMoney&&yaJinMoney&&rentPayDate&&rentPayWay&&rentLength&&rentOverDate&&rentStartDate&&renterPhone&&renterName)">保存</el-button>
         </div>
 
         <div @click="editRenter" v-show="isTypeEdit">
-          <el-button type="primary">保存修改</el-button>
+          <el-button type="primary" :disabled="!(rentMoney&&yaJinMoney&&rentPayDate&&rentPayWay&&rentLength&&rentOverDate&&rentStartDate&&renterPhone&&renterName)">保存修改</el-button>
 
         </div>
       </div>
@@ -164,9 +175,10 @@
         renterPhone: '',
 
         rentStartDate: new Date(),
-        rentOverDate: new Date().setMonth(new Date().getMonth()+3),
-        rentLength: '',
-        rentPayWay: '',
+        rentLength: 6,
+        rentOverDate: '',
+
+        rentPayWay: 1,//默认1月一付
         rentPayDate: '',
         yaJinMoney: '',
         rentMoney: ''
@@ -177,13 +189,40 @@
       'qr-back': QRBack,
     },
     created: function () {
+//      MyUtil.getNextMonth(new Date(),12)
+      let startTime = this.rentStartDate.getTime()
+      let length = Number(this.rentLength)
+      this.rentPayDate =this.rentStartDate.getDate()
+      this.rentOverDate = MyUtil.getNextMonth(new Date(startTime),length)
       this.fetchData()
     },
     watch: {
       // 如果路由有变化，会再次执行该方法
-      '$route': 'fetchData'
+      '$route': 'fetchData',
+      'rentLength':'rentLengthWatch',
+      'rentStartDate':'rentStartDateWatch'
     },
     methods: {
+      rentLengthWatch:function (new_rentLength) {
+
+//        if(new_rentLength===''||new_rentLength===0){
+//          this.rentLength = 1
+//          console.log('ssssssssssssssss1')
+//        }
+
+        let startTime = this.rentStartDate.getTime()
+        let length = Number(new_rentLength)
+        this.rentOverDate = MyUtil.getNextMonth(new Date(startTime),length)
+
+      },
+      rentStartDateWatch:function (new_rentStartDate) {
+
+        let startTime = new_rentStartDate.getTime()
+        let length = Number(this.rentLength)
+        this.rentOverDate = MyUtil.getNextMonth(new Date(startTime),length)
+        this.rentPayDate =new Date(startTime).getDate()
+      },
+
       fetchData: function () {
         this.houseId = this.$route.query.houseId
         this.accountId = this.$route.query.accountId
