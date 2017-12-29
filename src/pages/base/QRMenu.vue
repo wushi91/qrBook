@@ -116,11 +116,43 @@
       .actived {
         color: rgba(255, 255, 255, 1);
         background: rgba(23, 24, 26, 1);
+
+        .menu-image-book{
+          background: url("../../common/image/menu-book-icon-active.png") no-repeat;
+        }
+        .menu-image-bill{
+          background: url("../../common/image/menu-bill-icon-active.png") no-repeat;
+        }
+        .menu-image-record{
+          background: url("../../common/image/menu-record-icon-active.png") no-repeat;
+        }
+        .menu-image-money{
+          background: url("../../common/image/menu-money-icon-active.png") no-repeat;
+        }
       }
 
       li:active {
         color: rgba(255, 255, 255, 1);
         background: rgba(23, 24, 26, 1);
+
+
+      }
+
+      li:hover{
+        color: rgba(255, 255, 255, 1);
+        .menu-image-book{
+          background: url("../../common/image/menu-book-icon-active.png") no-repeat;
+        }
+        .menu-image-bill{
+          background: url("../../common/image/menu-bill-icon-active.png") no-repeat;
+        }
+        .menu-image-record{
+          background: url("../../common/image/menu-record-icon-active.png") no-repeat;
+        }
+        .menu-image-money{
+          background: url("../../common/image/menu-money-icon-active.png") no-repeat;
+        }
+
       }
 
     }

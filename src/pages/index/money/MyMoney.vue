@@ -145,7 +145,7 @@
     }
 
     .bank-card-container{
-      flex:1;
+      /*flex:1;*/
       margin-top:20px;
       background-color: white;
       padding: 20px 30px;

@@ -151,6 +151,7 @@
 
   .book {
     /*background-color: @content-bg;*/
+    flex:1;
     min-height: 100%;
     display: flex;
     .book-blank {

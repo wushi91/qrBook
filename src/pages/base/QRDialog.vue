@@ -170,8 +170,8 @@
 
         <el-input class='input-register-code' v-model="register_code" placeholder="请输入6位验证码">
           <template slot="append">
-            <div v-if="canClickCode" @click="toGetRegisteCode">获取验证码</div>
-            <div v-else style="color:#FA4B57;">{{daojishi}}</div>
+            <div v-if="canClickCode" @click="toGetRegisteCode">{{daojishi}}</div>
+            <div v-else style="color:#FA4B57; opacity: 0.5;">{{daojishi}}</div>
           </template>
         </el-input>
         <span class="error-input-tip">{{ register_code_tip }}</span>
@@ -206,10 +206,10 @@
         </el-input>
         <span  v-show='hasCheckedCode' class="error-input-tip">{{ forget_password_tip }}</span>
 
-        <el-input v-show='!hasCheckedCode' class='input-code' v-model="forget_code" placeholder="请输入6位验证码">
+        <el-input v-show='!hasCheckedCode' class='input-register-code' v-model="forget_code" placeholder="请输入6位验证码">
           <template slot="append">
-            <div v-if="canClickCode" @click="toGetForgetCode">获取验证码</div>
-            <div v-else style="color:#FA4B57;">{{daojishi}}</div>
+            <div v-if="canClickCode" @click="toGetForgetCode">{{daojishi}}</div>
+            <div v-else style="color:#FA4B57; opacity: 0.5;">{{daojishi}}</div>
           </template>
         </el-input>
         <span v-show='!hasCheckedCode' class="error-input-tip">{{ forget_code_tip }}</span>
@@ -254,14 +254,14 @@
         checkCard:{},
 
         //登陆
-        login_phonenum: '13822542317',
+        login_phonenum: '',
         login_password: '',
         login_phonenum_tip: '',
         login_password_tip: '',
         showPassword: false,
 
         //注册
-        register_phonenum: '13822542317',
+        register_phonenum: '',
         register_password: '',
         register_code: "",
         register_phonenum_tip: '',
@@ -269,9 +269,9 @@
         register_code_tip: "",
 
         canClickCode: true,
-        seconds: 10,
-        daoji_timer: 10,
-        daojishi: '',
+        seconds: 60,
+        daoji_timer: 60,
+        daojishi: '获取验证码',
 
         //重置密码
         hasCheckedCode: false,
@@ -415,6 +415,7 @@
           this.daoji_timer--
           setTimeout(this.waitToGetRegisteCode, 1000)
         } else {
+          this.daojishi = '重新发送'
           this.canClickCode = true
           this.daoji_timer = this.seconds
         }
@@ -430,7 +431,10 @@
           this.forget_phonenum_tip = ''
         }
 
-        Request.requestGetForgetCode(this, this.forget_phonenum)
+        this.canClickCode = false
+//        Request.requestGetForgetCode(this, this.forget_phonenum)
+        this.waitToGetRegisteCode()
+
       },
 
       checkForgetPhone: function () {
@@ -803,9 +807,9 @@
         background: rgba(240, 241, 242, 1);
         width: 171px;
         display: flex !important;
-        margin-right: 20px;
+        margin-right: 30px;
         div {
-          padding-left: 20px;
+          padding-left: 30px;
 
           margin-right: 0;
           cursor: pointer;

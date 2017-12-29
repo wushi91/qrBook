@@ -66,17 +66,18 @@
     flex:1;
 
     flex-direction: column;
-    background-color:rgba(240,241,242,1);
+
 
     .header{
       position: fixed;
       z-index: 99;
     }
     .wrapper{
+      background-color:red;
       padding-top: 60px;
       display: flex;
       flex:1;
-      align-items: stretch;
+
       .menu{
         position: fixed;
         height: 100%;
@@ -85,6 +86,7 @@
       .content-wrapper-router-outer{
         flex:1;
         padding: 20px 35px 58px 200px;
+        background-color:rgba(240,241,242,1);
 
       }
     }
