@@ -1,4 +1,5 @@
 import axios from 'axios'
+import data from '../data/citydata'
 
 export default {
 
@@ -271,8 +272,11 @@ export default {
   getFormateDate: function (time) {
     let date = new Date(time)
     return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
-  }
+  },
 
+  getCityData:function () {
+    return data.CityInfo
+  }
 }
 
 

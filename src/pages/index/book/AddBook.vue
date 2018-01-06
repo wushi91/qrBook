@@ -8,7 +8,16 @@
       <span class="title" v-show="isTypeEdit">编辑账本</span>
       <div class="add-book-content-item">
       <span class="city">房源所在城市</span>
-      <input value="广东省 深圳市" disabled placeholder="请选择房源所在的城市"/>
+        <el-cascader
+          :options="CityInfo"
+          v-model="selectedOptions"
+          :change-on-select="false"
+          :clearable="false"
+          :filterable="true"
+          placeholder="请选择房源所在的城市"
+          @change="handleCityChange">
+        </el-cascader>
+      <!--<input v-show="false" value="广东省 深圳市" disabled placeholder="请选择房源所在的城市"/>-->
       </div>
       <div class="add-book-content-item">
       <span class="detail-address">房源详细地址</span>
@@ -33,7 +42,8 @@
     name: 'AddBook',
     data() {
       return {
-
+        CityInfo:MyUtil.getCityData(),
+        selectedOptions:[],
         houseId:'',
         province: "广东省",
         city: '深圳市',
@@ -78,22 +88,48 @@
       },
       toSaveBook: function () {
         console.log('toSaveBook')
+        console.log(this.selectedOptions)
         let userId = MyUtil.getUserId()
-        Request.requestAddBook(this, userId, this.province, this.city, this.address)
+        // Request.requestAddBook(this, userId, this.province, this.city, this.address)
       },
       toEditBook:function () {
         console.log('toEditBook')
         let userId = MyUtil.getUserId()
         Request.requestEditBook(this, userId,this.houseId, this.province, this.city, this.address)
 
-      }
+      },
+      handleCityChange:function (val) {
+        // this.CityInfo.
+        let provinceValue = val[0]
+        let cityValue = val[1]
+        let _province = ''
+        let _city =''
+        this.CityInfo.forEach(function (provinceitem,index) {
+          if(provinceitem.value === provinceValue){
+            _province = provinceitem.label
+            provinceitem.children.forEach(function (cityitem,index) {
+              if(cityitem.value === cityValue){
+                _city = cityitem.label
+              }
+            })
 
+          }
+          // console.log(item)
+        })
+
+        this.province = _province
+        this.city = _city
+
+      }
 
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
+
+
 <style lang="less" scoped>
 
   @import "../../../common/less/index.less";
@@ -112,7 +148,8 @@
       .add-book-content-item{
         margin-top: 20px;
         display: flex;
-        span {
+
+        span:first-child {
           font-size:14px;
           color:rgba(51,51,51,1);
           margin-top: 10px;
@@ -144,11 +181,15 @@
       }
 
       textarea {
-
+        color:rgba(51,51,51,1);
         width: 320px;
         line-height: 25px;
         padding:9px 12px;
         font-size: 16px;
+        border: 1px solid #B1B2B3;
+        border-radius: 2px;
+        resize : none;
+        outline: none;
       }
 
       .btn-wrapper {
@@ -169,4 +210,28 @@
     }
   }
 
+</style>
+
+
+<style lang="less">
+
+  span.el-cascader{
+    margin-top: 0;
+    .el-input.el-input--suffix{
+      input{
+        width: 346px;
+        border: 1px solid #B1B2B3;
+        font-size: 16px;
+        line-height: 16px;
+        border-radius: 2px;
+      }
+
+    }
+
+    .el-cascader__label{
+      font-size: 16px;
+      color:rgba(51,51,51,1);
+    }
+    /*background-color: rebeccapurple;*/
+  }
 </style>
