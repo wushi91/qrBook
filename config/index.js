@@ -10,7 +10,8 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {//配置请求代理
+    proxyTable: {
+      //配置请求代理
       '/rentBook': {
         target: 'http://192.168.2.220:8080',
         // target: 'http://192.168.2.119:8080',
@@ -18,6 +19,7 @@ module.exports = {
         changeOrigin: true,
 
       },
+
     },
 
 

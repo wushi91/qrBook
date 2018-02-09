@@ -2,6 +2,7 @@
 // vae host:'.',//上线
 // var host = 'http://localhost:8080'
 var host = ''
+// const host = 'http://192.168.2.119:8080'
 
 export default {
   indexPage: '/index.html',

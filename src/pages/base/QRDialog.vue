@@ -432,7 +432,7 @@
         }
 
         this.canClickCode = false
-//        Request.requestGetForgetCode(this, this.forget_phonenum)
+        Request.requestGetForgetCode(this, this.forget_phonenum)
         this.waitToGetRegisteCode()
 
       },

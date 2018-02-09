@@ -90,7 +90,7 @@
         console.log('toSaveBook')
         console.log(this.selectedOptions)
         let userId = MyUtil.getUserId()
-        // Request.requestAddBook(this, userId, this.province, this.city, this.address)
+        Request.requestAddBook(this, userId, this.province, this.city, this.address)
       },
       toEditBook:function () {
         console.log('toEditBook')

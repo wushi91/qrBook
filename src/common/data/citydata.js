@@ -2,7 +2,7 @@
 
 
 let CityInfo=[
-          {value: 1, label: '北京', children: [
+          {value: 1, label: '北京市', children: [
               {value: 1, label: '北京市', children: [
                   {value: 1, label: '东城区'},
                   {value: 2, label: '西城区'},
@@ -24,7 +24,7 @@ let CityInfo=[
                   {value: 18, label: '延庆县'}
               ]}
           ]},
-          {value: 2, label: '天津', children: [
+          {value: 2, label: '天津市', children: [
               {value: 2, label: '天津市', children: [
                   {value: 19, label: '和平区'},
                   {value: 20, label: '河东区'},
@@ -46,7 +46,7 @@ let CityInfo=[
                   {value: 36, label: '蓟县'}
               ]}
           ]},
-          {value: 3, label: '河北', children: [
+          {value: 3, label: '河北省', children: [
               {value: 3, label: '石家庄市', children: [
                   {value: 37, label: '长安区'},
                   {value: 38, label: '桥东区'},
@@ -242,7 +242,7 @@ let CityInfo=[
                   {value: 208, label: '深州市'}
               ]}
           ]},
-          {value: 4, label: '山西', children: [
+          {value: 4, label: '山西省', children: [
               {value: 14, label: '太原市', children: [
                   {value: 209, label: '小店区'},
                   {value: 210, label: '迎泽区'},
@@ -385,7 +385,7 @@ let CityInfo=[
                   {value: 327, label: '汾阳市'}
               ]}
           ]},
-          {value: 5, label: '内蒙古', children: [
+          {value: 5, label: '内蒙古自治区', children: [
               {value: 25, label: '呼和浩特市', children: [
                   {value: 328, label: '新城区'},
                   {value: 329, label: '回民区'},
@@ -512,7 +512,7 @@ let CityInfo=[
                   {value: 428, label: '额济纳旗'}
               ]}
           ]},
-          {value: 6, label: '辽宁', children: [
+          {value: 6, label: '辽宁省', children: [
               {value: 37, label: '沈阳市', children: [
                   {value: 429, label: '和平区'},
                   {value: 430, label: '沈河区'},
@@ -642,7 +642,7 @@ let CityInfo=[
                   {value: 528, label: '兴城市'}
               ]}
           ]},
-          {value: 7, label: '吉林', children: [
+          {value: 7, label: '吉林省', children: [
               {value: 51, label: '长春市', children: [
                   {value: 529, label: '南关区'},
                   {value: 530, label: '宽城区'},
@@ -722,7 +722,7 @@ let CityInfo=[
                   {value: 588, label: '安图县'}
               ]}
           ]},
-          {value: 8, label: '黑龙江', children: [
+          {value: 8, label: '黑龙江省', children: [
               {value: 60, label: '哈尔滨市', children: [
                   {value: 589, label: '道里区'},
                   {value: 590, label: '南岗区'},
@@ -880,7 +880,7 @@ let CityInfo=[
                   {value: 718, label: '漠河县'}
               ]}
           ]},
-          {value: 9, label: '上海', children: [
+          {value: 9, label: '上海市', children: [
               {value: 73, label: '上海市', children: [
                   {value: 719, label: '黄浦区'},
                   {value: 720, label: '卢湾区'},
@@ -903,7 +903,7 @@ let CityInfo=[
                   {value: 737, label: '崇明县'}
               ]}
           ]},
-          {value: 10, label: '江苏', children: [
+          {value: 10, label: '江苏省', children: [
               {value: 74, label: '南京市', children: [
                   {value: 738, label: '玄武区'},
                   {value: 739, label: '白下区'},
@@ -1037,7 +1037,7 @@ let CityInfo=[
                   {value: 843, label: '泗洪县'}
               ]}
           ]},
-          {value: 11, label: '浙江', children: [
+          {value: 11, label: '浙江省', children: [
               {value: 87, label: '杭州市', children: [
                   {value: 844, label: '上城区'},
                   {value: 845, label: '下城区'},
@@ -1151,7 +1151,7 @@ let CityInfo=[
                   {value: 933, label: '龙泉市'}
               ]}
           ]},
-          {value: 12, label: '安徽', children: [
+          {value: 12, label: '安徽省', children: [
               {value: 98, label: '合肥市', children: [
                   {value: 934, label: '瑶海区'},
                   {value: 935, label: '庐阳区'},
@@ -1292,7 +1292,7 @@ let CityInfo=[
                   {value: 1038, label: '宁国市'}
               ]}
           ]},
-          {value: 13, label: '福建', children: [
+          {value: 13, label: '福建省', children: [
               {value: 115, label: '福州市', children: [
                   {value: 1039, label: '鼓楼区'},
                   {value: 1040, label: '台江区'},
@@ -1397,7 +1397,7 @@ let CityInfo=[
                   {value: 1123, label: '福鼎市'}
               ]}
           ]},
-          {value: 14, label: '江西', children: [
+          {value: 14, label: '江西省', children: [
               {value: 124, label: '南昌市', children: [
                   {value: 1124, label: '东湖区'},
                   {value: 1125, label: '西湖区'},
@@ -1520,7 +1520,7 @@ let CityInfo=[
                   {value: 1222, label: '德兴市'}
               ]}
           ]},
-          {value: 15, label: '山东', children: [
+          {value: 15, label: '山东省', children: [
               {value: 135, label: '济南市', children: [
                   {value: 1223, label: '历下区'},
                   {value: 1224, label: '市中区'},
@@ -1696,7 +1696,7 @@ let CityInfo=[
                   {value: 1362, label: '东明县'}
               ]}
           ]},
-          {value: 16, label: '河南', children: [
+          {value: 16, label: '河南省', children: [
               {value: 152, label: '郑州市', children: [
                   {value: 1363, label: '中原区'},
                   {value: 1364, label: '二七区'},
@@ -1892,7 +1892,7 @@ let CityInfo=[
                   {value: 1522, label: '新蔡县'}
               ]}
           ]},
-          {value: 17, label: '湖北', children: [
+          {value: 17, label: '湖北省', children: [
               {value: 169, label: '武汉市', children: [
                   {value: 1523, label: '江岸区'},
                   {value: 1524, label: '江汉区'},
@@ -2024,7 +2024,7 @@ let CityInfo=[
                   {value: 1624, label: '神农架林区'}
               ]}
           ]},
-          {value: 18, label: '湖南', children: [
+          {value: 18, label: '湖南省', children: [
               {value: 183, label: '长沙市', children: [
                   {value: 1625, label: '芙蓉区'},
                   {value: 1626, label: '天心区'},
@@ -2176,7 +2176,7 @@ let CityInfo=[
                   {value: 1746, label: '龙山县'}
               ]}
           ]},
-          {value: 19, label: '广东', children: [
+          {value: 19, label: '广东省', children: [
               {value: 197, label: '广州市', children: [
                   {value: 1747, label: '东山区'},
                   {value: 1748, label: '荔湾区'},
@@ -2339,7 +2339,7 @@ let CityInfo=[
                   {value: 1867, label: '罗定市'}
               ]}
           ]},
-          {value: 20, label: '广西', children: [
+          {value: 20, label: '广西壮族自治区', children: [
               {value: 218, label: '南宁市', children: [
                   {value: 1868, label: '兴宁区'},
                   {value: 1869, label: '青秀区'},
@@ -2478,7 +2478,7 @@ let CityInfo=[
                   {value: 1976, label: '凭祥市'}
               ]}
           ]},
-          {value: 21, label: '海南', children: [
+          {value: 21, label: '海南省', children: [
               {value: 232, label: '海口市', children: [
                   {value: 1977, label: '秀英区'},
                   {value: 1978, label: '龙华区'},
@@ -2507,7 +2507,7 @@ let CityInfo=[
                   {value: 1999, label: '中沙群岛的岛礁及其海域'}
               ]}
           ]},
-          {value: 22, label: '重庆', children: [
+          {value: 22, label: '重庆市', children: [
               {value: 234, label: '重庆市', children: [
                   {value: 2000, label: '万州区'},
                   {value: 2001, label: '涪陵区'},
@@ -2551,7 +2551,7 @@ let CityInfo=[
                   {value: 2039, label: '南川市'}
               ]}
           ]},
-          {value: 23, label: '四川', children: [
+          {value: 23, label: '四川省', children: [
               {value: 235, label: '成都市', children: [
                   {value: 2040, label: '锦江区'},
                   {value: 2041, label: '青羊区'},
@@ -2776,7 +2776,7 @@ let CityInfo=[
                   {value: 2220, label: '雷波县'}
               ]}
           ]},
-          {value: 24, label: '贵州', children: [
+          {value: 24, label: '贵州省', children: [
               {value: 256, label: '贵阳市', children: [
                   {value: 2221, label: '南明区'},
                   {value: 2222, label: '云岩区'},
@@ -2884,7 +2884,7 @@ let CityInfo=[
                   {value: 2308, label: '三都水族自治县'}
               ]}
           ]},
-          {value: 25, label: '云南', children: [
+          {value: 25, label: '云南省', children: [
               {value: 265, label: '昆明市', children: [
                   {value: 2309, label: '五华区'},
                   {value: 2310, label: '盘龙区'},
@@ -3047,7 +3047,7 @@ let CityInfo=[
                   {value: 2437, label: '维西傈僳族自治县'}
               ]}
           ]},
-          {value: 26, label: '西藏', children: [
+          {value: 26, label: '西藏自治区', children: [
               {value: 281, label: '拉萨市', children: [
                   {value: 2438, label: '城关区'},
                   {value: 2439, label: '林周县'},
@@ -3136,7 +3136,7 @@ let CityInfo=[
                   {value: 2510, label: '朗县'}
               ]}
           ]},
-          {value: 27, label: '陕西', children: [
+          {value: 27, label: '陕西省', children: [
               {value: 288, label: '西安市', children: [
                   {value: 2511, label: '新城区'},
                   {value: 2512, label: '碑林区'},
@@ -3265,7 +3265,7 @@ let CityInfo=[
                   {value: 2617, label: '柞水县'}
               ]}
           ]},
-          {value: 28, label: '甘肃', children: [
+          {value: 28, label: '甘肃省', children: [
               {value: 298, label: '兰州市', children: [
                   {value: 2618, label: '城关区'},
                   {value: 2619, label: '七里河区'},
@@ -3380,7 +3380,7 @@ let CityInfo=[
                   {value: 2703, label: '夏河县'}
               ]}
           ]},
-          {value: 29, label: '青海', children: [
+          {value: 29, label: '青海省', children: [
               {value: 312, label: '西宁市', children: [
                   {value: 2704, label: '城东区'},
                   {value: 2705, label: '城中区'},
@@ -3441,7 +3441,7 @@ let CityInfo=[
                   {value: 2746, label: '天峻县'}
               ]}
           ]},
-          {value: 30, label: '宁夏', children: [
+          {value: 30, label: '宁夏回族自治区', children: [
               {value: 320, label: '银川市', children: [
                   {value: 2747, label: '兴庆区'},
                   {value: 2748, label: '西夏区'},
@@ -3474,7 +3474,7 @@ let CityInfo=[
                   {value: 2767, label: '海原县'}
               ]}
           ]},
-          {value: 31, label: '新疆', children: [
+          {value: 31, label: '新疆维吾尔自治区', children: [
               {value: 325, label: '乌鲁木齐市', children: [
                   {value: 2768, label: '天山区'},
                   {value: 2769, label: '沙依巴克区'},
